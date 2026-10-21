@@ -58,10 +58,10 @@ The full walkthrough ships inside the app, under **Notes → Making your own scr
 # Copyright
 
 - App code itself follows GPL 3.0
-- Data used to generate learning dataset follows from CC 4.0
-  - Stroke data (personal): CC 4.0
-  - script files (personal): CC 4.0
-  - [UT Austin audio (Hindi letters pronunciation)](https://hindi.la.utexas.edu/resources/pronouncing-the-hindi-alphabet/): already CC 4.0
+- Data used to generate learning dataset follows from [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+  - Stroke data (personal): CC BY 4.0
+  - script files (personal): CC BY 4.0
+  - [UT Austin audio (Hindi letters pronunciation)](https://hindi.la.utexas.edu/resources/pronouncing-the-hindi-alphabet/): already CC BY 4.0
 
 # Acknowledgement
 - Developed with substantial assistance from [Claude Opus (Anthropic)](https://www.anthropic.com/claude-opus-5-5).
