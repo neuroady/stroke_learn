@@ -1,0 +1,266 @@
+package com.ady.strokelearn_owui.app
+
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.text.selection.SelectionContainer
+
+/* ==================== list ==================== */
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NotesScreen(
+    store: NoteStore,
+    onBack: () -> Unit,
+    onEdit: (String?) -> Unit,
+    onView: (String) -> Unit
+) {
+    val context = LocalContext.current
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Notes") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { onEdit(null) }) {
+                Icon(Icons.Default.Add, contentDescription = "New note")
+            }
+        }
+    ) { padding ->
+        if (store.notes.isEmpty()) {
+            Box(Modifier.padding(padding).fillMaxSize(), Alignment.Center) {
+                Text("No notes yet.", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            return@Scaffold
+        }
+
+        LazyColumn(
+            Modifier.padding(padding),
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            items(store.notes.size) { index ->
+                val note = store.notes[index]
+                NoteRow(
+                    note = note,
+                    onOpen = {
+                        if (note.isBookmark) openLink(context, note.url!!) else onView(note.id)
+                    },
+                    onEdit = { onEdit(note.id) },
+                    onDelete = { store.delete(note.id) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun NoteRow(
+    note: Note,
+    onOpen: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
+) {
+    var showMenu by remember { mutableStateOf(false) }
+
+    Surface(
+        tonalElevation = 2.dp,
+        shape = MaterialTheme.shapes.medium,
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onOpen)
+    ) {
+        Row(
+            Modifier.padding(start = 14.dp, top = 12.dp, bottom = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                if (note.isBookmark) Icons.Default.Link else Icons.Default.Notes,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(note.title, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+                if (note.body.isNotBlank()) {
+                    Text(
+                        note.body,
+                        fontSize = 14.sp,
+                        maxLines = 2,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+            IconButton(onClick = { showMenu = true }) {
+                Icon(Icons.Default.MoreVert, contentDescription = "More")
+            }
+            DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
+                DropdownMenuItem(
+                    text = { Text("Edit") },
+                    onClick = { showMenu = false; onEdit() }
+                )
+                DropdownMenuItem(
+                    text = { Text("Delete") },
+                    onClick = { showMenu = false; onDelete() }
+                )
+            }
+        }
+    }
+}
+
+/** Opens a URL in whatever browser the user has. */
+private fun openLink(context: android.content.Context, url: String) {
+    runCatching {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+}
+
+/* ==================== edit ==================== */
+
+/** One editor for both kinds: fill in the URL and it becomes a bookmark. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NoteEditScreen(
+    store: NoteStore,
+    noteId: String?,
+    onDone: () -> Unit
+) {
+    val existing = store.notes.firstOrNull { it.id == noteId }
+
+    var title by remember { mutableStateOf(existing?.title ?: "") }
+    var body by remember { mutableStateOf(existing?.body ?: "") }
+    var url by remember { mutableStateOf(existing?.url ?: "") }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(if (existing == null) "New note" else "Edit note") },
+                navigationIcon = {
+                    IconButton(onClick = onDone) {
+                        Icon(Icons.Default.Close, contentDescription = "Cancel")
+                    }
+                },
+                actions = {
+                    TextButton(
+                        enabled = title.isNotBlank(),
+                        onClick = {
+                            store.upsert(
+                                Note(
+                                    id = existing?.id ?: NoteStore.newId(),
+                                    title = title.trim(),
+                                    body = body.trim(),
+                                    url = url.trim().ifBlank { null }
+                                )
+                            )
+                            onDone()
+                        }
+                    ) { Text("Save") }
+                }
+            )
+        }
+    ) { padding ->
+        Column(
+            Modifier
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            OutlinedTextField(
+                value = title,
+                onValueChange = { title = it },
+                label = { Text("Title") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = url,
+                onValueChange = { url = it },
+                label = { Text("Link (optional)") },
+                placeholder = { Text("https://…") },
+                singleLine = true,
+                supportingText = { Text("With a link, tapping the note opens the browser.") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = body,
+                onValueChange = { body = it },
+                label = { Text("Note") },
+                minLines = 8,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+/* ==================== view ==================== */
+
+/** Read-only view of a text note. Bookmarks open in the browser instead. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NoteViewScreen(
+    store: NoteStore,
+    noteId: String?,
+    onBack: () -> Unit,
+    onEdit: (String) -> Unit
+) {
+    val note = store.notes.firstOrNull { it.id == noteId } ?: return
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(note.title) },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { onEdit(note.id) }) {
+                        Icon(Icons.Default.Edit, contentDescription = "Edit")
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        Column(
+            Modifier
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Text(note.title, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            if (note.body.isBlank()) {
+                Text(
+                    "This note is empty.",
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            } else {
+                SelectionContainer {
+                    Text(note.body, fontSize = 17.sp, lineHeight = 26.sp)
+                }
+            }
+        }
+    }
+}
