@@ -493,10 +493,15 @@ fun SessionRunnerScreen(
     val ghostColor = inkColor.copy(alpha = 0.28f)
     val boxColor = inkColor.copy(alpha = 0.22f)
 
-    // in training the glyph is known, so play it on sight; otherwise after checking
-    LaunchedEffect(index, checked) {
-        val reveal = training || checked
-        if (reveal && settings.autoPlayAudio && hasAudio) audio.play(script, letter)
+    // the sound is part of the prompt, so it plays when the glyph appears and
+    // again once the drawing is done
+    LaunchedEffect(index) {
+        if (settings.autoPlayAudio && hasAudio) audio.play(script, letter)
+    }
+
+    val glyphDone = checked || (training && step >= letter.strokes.size)
+    LaunchedEffect(index, glyphDone) {
+        if (glyphDone && settings.autoPlayAudio && hasAudio) audio.play(script, letter)
     }
 
     fun commitAndAdvance() {
@@ -522,7 +527,7 @@ fun SessionRunnerScreen(
                     }
                 },
                 actions = {
-                    if (hasAudio && (training || checked)) {
+                    if (hasAudio) {
                         IconButton(onClick = { audio.play(script, letter) }) {
                             Icon(Icons.Default.VolumeUp, contentDescription = "Play sound")
                         }
@@ -555,6 +560,34 @@ fun SessionRunnerScreen(
                 fontSize = 17.sp
             )
 
+            // the prompt details, shown from the start — the glyph itself is
+            // still hidden, which is what the test is actually about
+            if (!training) {
+                if (letter.ipa.isNotBlank()) {
+                    Text(
+                        letter.ipa,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                if (letter.pronunciationNote.isNotBlank()) {
+                    Text("Sounds like: ${letter.pronunciationNote}", fontSize = 16.sp)
+                }
+//                if (letter.exampleWord.isNotBlank()) {
+//                    Text(
+//                        buildString {
+//                            append(letter.exampleWord)
+//                            if (letter.exampleHinglish.isNotBlank())
+//                                append(" (${letter.exampleHinglish})")
+//                            if (letter.exampleMeaning.isNotBlank())
+//                                append(" — ${letter.exampleMeaning}")
+//                        },
+//                        fontSize = 16.sp,
+//                        color = MaterialTheme.colorScheme.onSurfaceVariant
+//                    )
+                }
+//            }
+
             DrawingCanvas(
                 // keep the raw strokes on screen when there is no coloured version
                 strokes = if ((checked || trainingDone) && config.scoringEnabled)
@@ -572,8 +605,7 @@ fun SessionRunnerScreen(
                     }
                 },
                 overlay = {
-                    // the box is the only placement hint outside training
-                    if (!config.showGuideGlyph) drawBoundingBox(letter.strokes, boxColor)
+                    drawBoundingBox(letter.strokes, boxColor)
 
                     when {
                         checked -> {
@@ -632,11 +664,16 @@ fun SessionRunnerScreen(
                     )
                 }
                 Text("${letter.name}  ${letter.romanisation}", fontSize = 19.sp)
-                if (letter.ipa.isNotBlank()) {
-                    Text(letter.ipa, fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                // ipa and the hint are already on screen for tests; training
+                // hasn't shown them yet
+                if (training && letter.ipa.isNotBlank()) {
+                    Text(
+                        letter.ipa,
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
-                if (letter.pronunciationNote.isNotBlank()) {
+                if (training && letter.pronunciationNote.isNotBlank()) {
                     Text(letter.pronunciationNote, fontSize = 16.sp)
                 }
             }
