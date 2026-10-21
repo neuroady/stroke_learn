@@ -1,9 +1,20 @@
 package com.ady.strokelearn_owui.app
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
@@ -11,9 +22,31 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +75,8 @@ enum class SessionKind { TRAINING, TEST, EXAM }
 data class SessionConfig(
     val kind: SessionKind,
     val letters: List<Letter>,
-    val repsPerGlyph: Int
+    val repsPerGlyph: Int,
+    val scoringEnabled: Boolean = true
 ) {
     val showGuideGlyph get() = kind == SessionKind.TRAINING
     val traceStrokes get() = kind == SessionKind.TRAINING
@@ -59,7 +93,11 @@ class SessionHolder {
     }
 }
 
-data class SessionResult(val letter: Letter, val score: Float)
+data class SessionResult(
+    val letter: Letter,
+    val score: Float,
+    val drawn: List<Stroke> = emptyList()
+)
 
 /** Builds the shuffled queue: each glyph appears up to [repsPerGlyph] times. */
 private fun buildQueue(config: SessionConfig): List<Letter> =
@@ -159,6 +197,7 @@ fun SessionSetupScreen(
     var selected by remember { mutableStateOf(pool.shuffled().take(count).map { it.id }.toSet()) }
     var reps by remember { mutableIntStateOf(3) }
     var picking by remember { mutableStateOf(false) }
+    var scoring by remember { mutableStateOf(false) }
 
     // reshuffle when the count changes, unless the user is hand-picking
     fun reshuffle(newCount: Int) {
@@ -183,7 +222,7 @@ fun SessionSetupScreen(
             )
         },
         bottomBar = {
-            Surface(tonalElevation = 3.dp) {
+            Surface(tonalElevation = 3.dp, modifier = Modifier.navigationBarsPadding()) {
                 Button(
                     onClick = {
                         val letters = pool.filter { it.id in selected }
@@ -191,7 +230,8 @@ fun SessionSetupScreen(
                             SessionConfig(
                                 kind = kind,
                                 letters = letters,
-                                repsPerGlyph = if (kind == SessionKind.TRAINING) reps else 1
+                                repsPerGlyph = if (kind == SessionKind.TRAINING) reps else 1,
+                                scoringEnabled = kind == SessionKind.TRAINING || scoring
                             )
                         )
                         onStart()
@@ -242,7 +282,24 @@ fun SessionSetupScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-
+            if (kind != SessionKind.TRAINING) {
+                Spacer(Modifier.height(12.dp))
+                Row(
+                    Modifier.fillMaxWidth().clickable { scoring = !scoring },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Score each answer", fontSize = 17.sp)
+                        Text(
+                            "Compares your drawing to the stored strokes. " +
+                                    "Off by default — the comparison is rough.",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(checked = scoring, onCheckedChange = { scoring = it })
+                }
+            }
             Spacer(Modifier.height(12.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("Selected glyphs", fontSize = 17.sp, modifier = Modifier.weight(1f))
@@ -405,8 +462,16 @@ fun SessionRunnerScreen(
     onBack: () -> Unit,
     onFinished: () -> Unit
 ) {
-    val script = state.current ?: return
-    val config = holder.config ?: return
+    val script = state.current
+    val config = holder.config
+
+    // the session can be lost if the process is restarted — leave rather than
+    // render an empty screen with no way out
+    if (script == null || config == null) {
+        LaunchedEffect(Unit) { onBack() }
+        return
+    }
+
     val queue = remember(config) { buildQueue(config) }
 
     var index by remember { mutableIntStateOf(0) }
@@ -436,9 +501,9 @@ fun SessionRunnerScreen(
 
     fun commitAndAdvance() {
         val score = compareLetters(drawn, letter.strokes)
-        holder.results.add(SessionResult(letter, score))
+        holder.results.add(SessionResult(letter, score, drawn.toList()))
         progress.recordEncounter(script.id, letter.id)
-        progress.recordScore(script.id, letter.id, score)
+        if (config.scoringEnabled) progress.recordScore(script.id, letter.id, score)
 
         drawn.clear()
         step = 0
@@ -491,7 +556,9 @@ fun SessionRunnerScreen(
             )
 
             DrawingCanvas(
-                strokes = if (checked || trainingDone) emptyList() else drawn,
+                // keep the raw strokes on screen when there is no coloured version
+                strokes = if ((checked || trainingDone) && config.scoringEnabled)
+                    emptyList() else drawn,
                 enabled = !checked && !trainingDone,
                 guideGlyph = if (config.showGuideGlyph && settings.showGuideGlyph)
                     letter.name else "",
@@ -542,25 +609,28 @@ fun SessionRunnerScreen(
                 } else if (!checked) {
                     Button(
                         onClick = {
-                            comparisons = compareLettersDetailed(drawn, letter.strokes)
+                            if (config.scoringEnabled) {
+                                comparisons = compareLettersDetailed(drawn, letter.strokes)
+                            }
                             checked = true
                         },
                         enabled = drawn.isNotEmpty()
-                    ) { Text("Check") }
+                    ) { Text(if (config.scoringEnabled) "Check" else "Reveal") }
                 } else {
                     Button(onClick = { commitAndAdvance() }) { Text("Next") }
                 }
             }
 
             if (checked || trainingDone) {
-                val score = compareLetters(drawn, letter.strokes)
-                val percent = (score * 100).toInt()
-                Text(
-                    "$percent%",
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = scoreColor(percent)
-                )
+                if (config.scoringEnabled) {
+                    val percent = (compareLetters(drawn, letter.strokes) * 100).toInt()
+                    Text(
+                        "$percent%",
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = scoreColor(percent)
+                    )
+                }
                 Text("${letter.name}  ${letter.romanisation}", fontSize = 19.sp)
                 if (letter.ipa.isNotBlank()) {
                     Text(letter.ipa, fontSize = 16.sp,
@@ -585,18 +655,24 @@ fun SessionSummaryScreen(
     holder: SessionHolder,
     onDone: () -> Unit
 ) {
-    val script = state.current ?: return
+    val script = state.current
+    if (script == null) {
+        LaunchedEffect(Unit) { onDone() }
+        return
+    }
     // several attempts at one glyph collapse to its best score
+    // several attempts at one glyph collapse to the best-scoring one, keeping
+    // the drawing that produced it
     val byLetter = remember(holder.results.size) {
         holder.results
             .groupBy { it.letter.id }
-            .map { (_, results) -> results.first().letter to results.maxOf { it.score } }
+            .map { (_, results) -> results.maxBy { it.score } }
     }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Session complete") }) },
         bottomBar = {
-            Surface(tonalElevation = 3.dp) {
+            Surface(tonalElevation = 3.dp, modifier = Modifier.navigationBarsPadding()) {
                 Button(
                     onClick = onDone,
                     modifier = Modifier.fillMaxWidth().padding(16.dp)
@@ -616,20 +692,29 @@ fun SessionSummaryScreen(
                 return@Column
             }
 
-            val average = byLetter.map { it.second }.average()
-            Text(
-                "Average ${(average * 100).toInt()}%",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
+            val scored = holder.config?.scoringEnabled ?: true
+            if (scored) {
+                val average = byLetter.map { it.score }.average()
+                Text(
+                    "Average ${(average * 100).toInt()}%",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            } else {
+                Text(
+                    "${byLetter.size} glyphs",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Text(
                 "Mark each glyph. Learned ones are left out of future sessions.",
                 fontSize = 15.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            byLetter.forEach { (letter, score) ->
-                SummaryRow(script.id, letter, score, progress)
+            byLetter.forEach { result ->
+                SummaryRow(script.id, result, scored, progress)
             }
         }
     }
@@ -638,39 +723,52 @@ fun SessionSummaryScreen(
 @Composable
 private fun SummaryRow(
     scriptId: String,
-    letter: Letter,
-    score: Float,
+    result: SessionResult,
+    showScore: Boolean,
     progress: ProgressStore
 ) {
+    val letter = result.letter
     val status = progress.of(scriptId, letter.id).status
-    val percent = (score * 100).toInt()
+    val percent = (result.score * 100).toInt()
 
     Surface(tonalElevation = 1.dp, shape = MaterialTheme.shapes.medium) {
         Row(
             Modifier.fillMaxWidth().padding(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(letter.name, fontSize = 30.sp, modifier = Modifier.width(56.dp))
-            Column(Modifier.weight(1f)) {
-                Text(
-                    buildString {
-                        append(letter.romanisation)
-                        if (letter.ipa.isNotBlank()) append("  ${letter.ipa}")
-                    },
-                    fontSize = 16.sp
-                )
-                Text(
-                    "$percent%",
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = scoreColor(percent)
-                )
+            StrokeThumbnail(
+                target = letter.strokes,
+                drawn = result.drawn,
+                modifier = Modifier.size(72.dp)
+            )
+            Spacer(Modifier.width(12.dp))
+
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(letter.name, fontSize = 26.sp)
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        buildString {
+                            append(letter.romanisation)
+                            if (letter.ipa.isNotBlank()) append("  ${letter.ipa}")
+                        },
+                        fontSize = 15.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                if (showScore) {
+                    Text(
+                        "$percent%",
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = scoreColor(percent)
+                    )
+                }
+                StatusToggle(status) { progress.setStatus(scriptId, letter.id, it) }
             }
-            StatusToggle(status) { progress.setStatus(scriptId, letter.id, it) }
         }
     }
 }
-
 @Composable
 private fun StatusToggle(status: LearningStatus, onChange: (LearningStatus) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {

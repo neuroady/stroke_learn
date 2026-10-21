@@ -2,6 +2,7 @@ package com.ady.strokelearn_owui.app
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
+import com.ady.strokelearn_owui.app.NoteStore.Companion.defaultNotes
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
