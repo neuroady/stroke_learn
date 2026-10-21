@@ -7,7 +7,7 @@
 An app that helps you learn how to draw script-glyphs one stroke at a time. Currently, only supports Hindi (Devanagari). Can be extended to support any script (fictional or real).
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Release](https://img.shields.io/github/v/release/<user>/stroke_learn)](https://github.com/<user>/stroke_learn/releases)
+[![Release](https://img.shields.io/github/v/release/neuroady/stroke_learn)](https://github.com/<user>/stroke_learn/releases)
 ![Platform](https://img.shields.io/badge/platform-Android%208.0%2B-brightgreen)
 
 ---
@@ -64,4 +64,4 @@ The full walkthrough ships inside the app, under **Notes → Making your own scr
   - [UT Austin audio (Hindi letters pronunciation)](https://hindi.la.utexas.edu/resources/pronouncing-the-hindi-alphabet/): already CC 4.0
 
 # Acknowledgement
-- Developed with substantial assistance from Claude Opus (Anthropic).
+- Developed with substantial assistance from [Claude Opus (Anthropic)](https://www.anthropic.com/claude-opus-5-5).
