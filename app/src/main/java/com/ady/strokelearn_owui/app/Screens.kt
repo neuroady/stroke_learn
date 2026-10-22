@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -100,14 +101,19 @@ fun ScriptDrawer(
     onSettings: () -> Unit
 ) {
     ModalDrawerSheet {
-        Text(
-            "Scripts",
-            Modifier.padding(16.dp),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-        HorizontalDivider()
-        state.scripts.forEach { script ->
+        Column(
+            Modifier
+                .verticalScroll(rememberScrollState())
+                .navigationBarsPadding()
+        ) {
+            Text(
+                "Scripts",
+                Modifier.padding(16.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            HorizontalDivider()
+            state.scripts.forEach { script ->
             NavigationDrawerItem(
                 label = {
                     Column {
@@ -132,13 +138,15 @@ fun ScriptDrawer(
             onClick = onNotes,
             modifier = Modifier.padding(horizontal = 12.dp)
         )
-        NavigationDrawerItem(
-            label = { Text("Settings") },
-            icon = { Icon(Icons.Default.Settings, contentDescription = null) },
-            selected = false,
-            onClick = onSettings,
-            modifier = Modifier.padding(horizontal = 12.dp)
-        )
+            NavigationDrawerItem(
+                label = { Text("Settings") },
+                icon = { Icon(Icons.Default.Settings, contentDescription = null) },
+                selected = false,
+                onClick = onSettings,
+                modifier = Modifier.padding(horizontal = 12.dp)
+            )
+            Spacer(Modifier.height(12.dp))
+        }
     }
 }
 

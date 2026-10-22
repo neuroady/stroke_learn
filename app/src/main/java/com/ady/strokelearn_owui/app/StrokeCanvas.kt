@@ -1,5 +1,6 @@
 package com.ady.strokelearn_owui.app
 
+import android.graphics.Typeface
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,11 +24,10 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import kotlin.math.hypot
 import kotlin.math.pow
-import android.graphics.Typeface
-import androidx.compose.ui.platform.LocalContext
 
 private const val INK_WIDTH = 14f
 
