@@ -158,11 +158,14 @@ fun LibraryScreen(
     onEdit: (String) -> Unit,
     onPractice: (String) -> Unit,
     onTest: (String) -> Unit,
-    onDataset: () -> Unit
+    onDataset: () -> Unit,
+    onFreeDraw: (String) -> Unit,
+    onGuide: () -> Unit
 ) {
     val script = state.current
     // hoisted so the scroll position survives navigating away and back
     val gridState = rememberLazyGridState()
+    var untraced by remember { mutableStateOf<Letter?>(null) }
 
     Scaffold(
         topBar = {
@@ -233,14 +236,28 @@ fun LibraryScreen(
                     else LetterTile(
                         letter = letter,
                         progress = progress.of(script.id, letter.id),
-                        onClick = { onPractice(letter.id) },
+                        onClick = {
+                            if (letter.strokes.isEmpty()) untraced = letter
+                            else onPractice(letter.id)
+                        },
                         onTest = { onTest(letter.id) },
+                        onStatus = { progress.setStatus(script.id, letter.id, it) },
+                        onReset = { progress.reset(script.id, letter.id) },
                         onEdit = { onEdit(letter.id) },
                         onDelete = { state.deleteLetter(letter.id) }
                     )
                 }
             }
         }
+    }
+    untraced?.let { letter ->
+        NoStrokesDialog(
+            letter = letter,
+            onDismiss = { untraced = null },
+            onFreeDraw = { untraced = null; onFreeDraw(letter.id) },
+            onCreate = { untraced = null; onEdit(letter.id) },
+            onGuide = { untraced = null; onGuide() }
+        )
     }
 }
 
@@ -277,6 +294,8 @@ private fun LetterTile(
     progress: LetterProgress,
     onClick: () -> Unit,
     onTest: () -> Unit,
+    onStatus: (LearningStatus) -> Unit,
+    onReset: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -360,6 +379,23 @@ private fun LetterTile(
                 text = { Text("Test", fontSize = 16.sp) },
                 onClick = { showMenu = false; onTest() }
             )
+            HorizontalDivider()
+            DropdownMenuItem(
+                text = { Text("Mark as learning", fontSize = 16.sp) },
+                enabled = progress.status != LearningStatus.LEARNING,
+                onClick = { showMenu = false; onStatus(LearningStatus.LEARNING) }
+            )
+            DropdownMenuItem(
+                text = { Text("Mark as learned", fontSize = 16.sp) },
+                enabled = progress.status != LearningStatus.LEARNED,
+                onClick = { showMenu = false; onStatus(LearningStatus.LEARNED) }
+            )
+            DropdownMenuItem(
+                text = { Text("Reset to not encountered", fontSize = 16.sp) },
+                enabled = progress.status != LearningStatus.NEW || progress.encounters > 0,
+                onClick = { showMenu = false; onReset() }
+            )
+            HorizontalDivider()
             DropdownMenuItem(
                 text = { Text("Edit", fontSize = 16.sp) },
                 onClick = { showMenu = false; onEdit() }
@@ -427,12 +463,22 @@ fun EditLetterScreen(state: AppState, letterId: String?, onDone: () -> Unit) {
     var exampleWord by remember { mutableStateOf(existing?.exampleWord ?: "") }
     var exampleHinglish by remember { mutableStateOf(existing?.exampleHinglish ?: "") }
     var exampleMeaning by remember { mutableStateOf(existing?.exampleMeaning ?: "") }
+    // a new letter inherits the group of the letter before it in the ordering
     var groupId by remember {
-        mutableStateOf(existingGroupId ?: script.groups.firstOrNull()?.id ?: "")
+        mutableStateOf(
+            existingGroupId ?: script.groups
+                .flatMap { group -> group.letters.map { group.id to it.order } }
+                .filter { it.second < (existing?.order ?: Int.MAX_VALUE) }
+                .maxByOrNull { it.second }?.first
+            ?: script.groups.lastOrNull()?.id
+            ?: ""
+        )
     }
     val strokes = remember {
         mutableStateListOf<Stroke>().apply { existing?.let { addAll(it.strokes) } }
     }
+
+    val guideTypeface = rememberScriptTypeface(script.font)
 
     Scaffold(
         topBar = {
@@ -478,7 +524,16 @@ fun EditLetterScreen(state: AppState, letterId: String?, onDone: () -> Unit) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            GroupPicker(script.groups, groupId) { groupId = it }
+            GroupPicker(
+                groups = script.groups,
+                selected = groupId,
+                onSelect = { groupId = it },
+                onCreate = { name ->
+                    val id = name.lowercase().replace(Regex("[^a-z0-9]+"), "_").trim('_')
+                    state.addGroup(id, name)
+                    groupId = id
+                }
+            )
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedTextField(
@@ -547,7 +602,8 @@ fun EditLetterScreen(state: AppState, letterId: String?, onDone: () -> Unit) {
             DrawingCanvas(
                 strokes = strokes,
                 onStrokeFinished = { strokes.add(it) },
-                guideGlyph = name
+                guideGlyph = name,
+                guideTypeface = guideTypeface
             )
             StrokeButtons(strokes)
         }
@@ -556,8 +612,14 @@ fun EditLetterScreen(state: AppState, letterId: String?, onDone: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun GroupPicker(groups: List<LetterGroup>, selected: String, onSelect: (String) -> Unit) {
+private fun GroupPicker(
+    groups: List<LetterGroup>,
+    selected: String,
+    onSelect: (String) -> Unit,
+    onCreate: (String) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
+    var creating by remember { mutableStateOf(false) }
     val current = groups.firstOrNull { it.id == selected }
 
     ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = it }) {
@@ -576,7 +638,38 @@ private fun GroupPicker(groups: List<LetterGroup>, selected: String, onSelect: (
                     onClick = { onSelect(group.id); expanded = false }
                 )
             }
+            HorizontalDivider()
+            DropdownMenuItem(
+                text = { Text("New group…") },
+                leadingIcon = { Icon(Icons.Default.Add, contentDescription = null) },
+                onClick = { expanded = false; creating = true }
+            )
         }
+    }
+
+    if (creating) {
+        var newName by remember { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = { creating = false },
+            title = { Text("New group") },
+            text = {
+                OutlinedTextField(
+                    value = newName,
+                    onValueChange = { newName = it },
+                    label = { Text("Name") },
+                    singleLine = true
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    enabled = newName.isNotBlank(),
+                    onClick = { onCreate(newName.trim()); creating = false }
+                ) { Text("Create") }
+            },
+            dismissButton = {
+                TextButton(onClick = { creating = false }) { Text("Cancel") }
+            }
+        )
     }
 }
 
@@ -618,19 +711,32 @@ fun DatasetStartScreen(
     val context = LocalContext.current
     val script = state.current
     var status by remember { mutableStateOf<String?>(null) }
+    val bundle = remember { ScriptBundle(context) }
 
     val openFile = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument()
     ) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
         status = runCatching {
-            context.contentResolver.openInputStream(uri)
-                ?.bufferedReader()?.use { it.readText() }
+            val stream = context.contentResolver.openInputStream(uri)
                 ?: error("Could not read file")
-        }.mapCatching { text ->
-            state.importScript(text).getOrThrow()
+            val imported = stream.use { bundle.readBundle(it).getOrThrow() }
+
+            val id = state.importScript(imported.json).getOrThrow()
+            val result = state.scriptById(id)?.let { bundle.saveAudio(it, imported.audio) }
+
+            when {
+                result == null || result.saved == 0 -> "Loaded."
+                result.orphans.isEmpty() -> "Loaded, with ${result.saved} audio files."
+                else -> "Loaded, with ${result.saved} audio files. " +
+                        "${result.orphans.size} of them (${result.orphans.take(3).joinToString()}" +
+                        (if (result.orphans.size > 3) ", …" else "") +
+                        ") do not match any letter in this script — the letter ids " +
+                        "have probably changed since the bundle was made. The files " +
+                        "are saved but unused."
+            }
         }.fold(
-            onSuccess = { "Loaded." },
+            onSuccess = { it },
             onFailure = { e -> "Could not load: ${e.message}" }
         )
     }
@@ -668,11 +774,17 @@ fun DatasetStartScreen(
             ) { Text("Continue tracing") }
 
             OutlinedButton(
-                onClick = { openFile.launch(arrayOf("application/json", "text/plain")) },
+                onClick = {
+                    openFile.launch(
+                        arrayOf("application/json", "application/zip", "text/plain", "*/*")
+                    )
+                },
                 modifier = Modifier.fillMaxWidth()
-            ) { Text("Load JSON…") }
+            ) { Text("Load script…") }
 
-            status?.let { Text(it, color = Color.Gray, fontSize = 13.sp) }
+            status?.let {
+                Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 14.sp)
+            }
 
             Text(
                 "Loading a JSON replaces the stored copy of that script. " +
@@ -690,7 +802,13 @@ fun DatasetStartScreen(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DatasetScreen(state: AppState, onBack: () -> Unit, onExport: () -> Unit) {
+fun DatasetScreen(
+    state: AppState,
+    audio: AudioPlayer,
+    capture: AudioCapture,
+    onBack: () -> Unit,
+    onExport: () -> Unit
+) {
     val script = state.current ?: return
     val queue = remember(script) {
         script.groups.flatMap { group -> group.letters.map { group.id to it } }
@@ -717,6 +835,8 @@ fun DatasetScreen(state: AppState, onBack: () -> Unit, onExport: () -> Unit) {
     fun persist() {
         state.upsertLetter(groupId, letter.copy(strokes = strokes.toList()))
     }
+
+    val guideTypeface = rememberScriptTypeface(script.font)
 
     Scaffold(
         topBar = {
@@ -753,9 +873,14 @@ fun DatasetScreen(state: AppState, onBack: () -> Unit, onExport: () -> Unit) {
             DrawingCanvas(
                 strokes = strokes,
                 onStrokeFinished = { strokes.add(it) },
-                guideGlyph = letter.name
+                guideGlyph = letter.name,
+                guideTypeface = guideTypeface
             )
             StrokeButtons(strokes)
+
+            HorizontalDivider()
+            LetterAudioSection(script, letter, audio, capture)
+            HorizontalDivider()
 
             Row(
                 Modifier.fillMaxWidth(),
@@ -835,7 +960,51 @@ private fun SelectionContainerText(text: String) {
     }
 }
 
-/* ==================== practice ==================== */
+/**
+ * Offered when a letter has no stored strokes: practise freehand over the
+ * rendered font, or go and record the strokes properly.
+ */
+@Composable
+fun NoStrokesDialog(
+    letter: Letter,
+    onDismiss: () -> Unit,
+    onFreeDraw: () -> Unit,
+    onCreate: () -> Unit,
+    onGuide: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("No strokes for ${letter.name}") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text(
+                    "This letter has no stroke data yet, so there is nothing to " +
+                            "guide or score you against.",
+                    fontSize = 15.sp
+                )
+                Text(
+                    "StrokeLearn ships most scripts as skeletons on purpose. " +
+                            "Stroke order varies between teachers and regions, and you " +
+                            "are the one who should decide what is correct — so you " +
+                            "record it yourself, once, and practise against your own " +
+                            "version from then on.",
+                    fontSize = 15.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                TextButton(onClick = onGuide, contentPadding = PaddingValues(0.dp)) {
+                    Text("Read the guide on building a script")
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onCreate) { Text("Add strokes") }
+        },
+        dismissButton = {
+            TextButton(onClick = onFreeDraw) { Text("Draw freehand") }
+        }
+    )
+}
+
 /* ==================== practice ==================== */
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -996,6 +1165,7 @@ fun TestScreen(
     val drawn = remember { mutableStateListOf<Stroke>() }
     var score by remember { mutableStateOf<Float?>(null) }
     var comparisons by remember { mutableStateOf<List<StrokeComparison>>(emptyList()) }
+
 
     val checked = score != null
     val hasAudio = remember(letter.id) { audio.hasAudio(script, letter) }

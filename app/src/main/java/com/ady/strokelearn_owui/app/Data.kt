@@ -57,6 +57,8 @@ data class Script(
     val name: String,
     val script: String = "",
     val audioDir: String = "",
+    /** Font file in assets/fonts/, for scripts the system cannot render. */
+    val font: String? = null,
     val isDefault: Boolean = false,
     val groups: List<LetterGroup> = emptyList()
 ) {
@@ -203,6 +205,8 @@ class AppState(private val repo: ScriptRepository) {
             select(id)
         }
 
+    fun scriptById(scriptId: String): Script? = scripts.firstOrNull { it.id == scriptId }
+
     /** Adds or replaces a letter in the given group, then writes to disk. */
     fun upsertLetter(groupId: String, letter: Letter) {
         val script = current ?: return
@@ -235,6 +239,12 @@ class AppState(private val repo: ScriptRepository) {
     fun exportScript(scriptId: String): String? =
         scripts.firstOrNull { it.id == scriptId }?.let { repo.exportToText(it) }
 
+    /** Adds an empty group to the current script, ignoring duplicate ids. */
+    fun addGroup(groupId: String, name: String) {
+        val script = current ?: return
+        if (script.groups.any { it.id == groupId }) return
+        replaceCurrent(script.copy(groups = script.groups + LetterGroup(groupId, name)))
+    }
     private fun replaceCurrent(updated: Script) {
         val index = scripts.indexOfFirst { it.id == updated.id }
         if (index >= 0) scripts[index] = updated else scripts.add(updated)

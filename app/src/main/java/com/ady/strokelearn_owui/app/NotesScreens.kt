@@ -49,6 +49,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.clickable
+import androidx.compose.material3.Switch
 
 /* ==================== list ==================== */
 
@@ -56,16 +58,19 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun NotesScreen(
     store: NoteStore,
+    state: AppState,
     onBack: () -> Unit,
     onEdit: (String?) -> Unit,
     onView: (String) -> Unit
 ) {
     val context = LocalContext.current
+    val script = state.current
+    val visible = store.forScript(script?.id)
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Notes") },
+                title = { Text(script?.let { "Notes · ${it.name}" } ?: "Notes") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
@@ -79,7 +84,7 @@ fun NotesScreen(
             }
         }
     ) { padding ->
-        if (store.notes.isEmpty()) {
+        if (visible.isEmpty()) {
             Box(Modifier.padding(padding).fillMaxSize(), Alignment.Center) {
                 Text("No notes yet.", color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
@@ -91,8 +96,8 @@ fun NotesScreen(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            items(store.notes.size) { index ->
-                val note = store.notes[index]
+            items(visible.size) { index ->
+                val note = visible[index]
                 NoteRow(
                     note = note,
                     onOpen = {
@@ -172,14 +177,18 @@ private fun openLink(context: android.content.Context, url: String) {
 @Composable
 fun NoteEditScreen(
     store: NoteStore,
+    state: AppState,
     noteId: String?,
     onDone: () -> Unit
 ) {
     val existing = store.notes.firstOrNull { it.id == noteId }
+    val script = state.current
 
     var title by remember { mutableStateOf(existing?.title ?: "") }
     var body by remember { mutableStateOf(existing?.body ?: "") }
     var url by remember { mutableStateOf(existing?.url ?: "") }
+    // a new note belongs to the script you are in; existing notes keep their scope
+    var global by remember { mutableStateOf(existing?.scriptId == null && existing != null) }
 
     Scaffold(
         topBar = {
@@ -199,7 +208,8 @@ fun NoteEditScreen(
                                     id = existing?.id ?: NoteStore.newId(),
                                     title = title.trim(),
                                     body = body.trim(),
-                                    url = url.trim().ifBlank { null }
+                                    url = url.trim().ifBlank { null },
+                                    scriptId = if (global) null else script?.id
                                 )
                             )
                             onDone()
@@ -232,6 +242,21 @@ fun NoteEditScreen(
                 supportingText = { Text("With a link, tapping the note opens the browser.") },
                 modifier = Modifier.fillMaxWidth()
             )
+            Row(
+                Modifier.fillMaxWidth().clickable { global = !global },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column(Modifier.weight(1f)) {
+                    Text("Show in every script", fontSize = 16.sp)
+                    Text(
+                        if (global) "Visible everywhere."
+                        else "Only in ${script?.name ?: "this script"}.",
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Switch(checked = global, onCheckedChange = { global = it })
+            }
             OutlinedTextField(
                 value = body,
                 onValueChange = { body = it },

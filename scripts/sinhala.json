@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "id": "sinhala",
+  "name": "Sinhala",
+  "script": "Sinhala",
+  "audioDir": "sinhala",
+  "isDefault": false,
+  "groups": [
+    {
+      "id": "vowels",
+      "name": "ස්වර — Vowels",
+      "letters": [
+        { "id": "01_a", "order": 1, "name": "අ", "romanisation": "a", "ipa": "/ə/", "pronunciationNote": "'a' in about", "exampleWord": "අම්මා", "exampleHinglish": "ammaa", "exampleMeaning": "mother" },
+        { "id": "02_aa", "order": 2, "name": "ආ", "romanisation": "ā", "ipa": "/aː/", "pronunciationNote": "'a' in father, held longer" },
+        { "id": "03_ae", "order": 3, "name": "ඇ", "romanisation": "æ", "ipa": "/æ/", "pronunciationNote": "'a' in cat — a sound Hindi and Tamil lack" },
+        { "id": "04_aae", "order": 4, "name": "ඈ", "romanisation": "ǣ", "ipa": "/æː/", "pronunciationNote": "long version of ඇ" },
+        { "id": "05_i", "order": 5, "name": "ඉ", "romanisation": "i", "ipa": "/i/", "pronunciationNote": "'i' in sit", "exampleWord": "ඉර", "exampleHinglish": "ira", "exampleMeaning": "sun" },
+        { "id": "06_ii", "order": 6, "name": "ඊ", "romanisation": "ī", "ipa": "/iː/", "pronunciationNote": "'ee' in see" },
+        { "id": "07_u", "order": 7, "name": "උ", "romanisation": "u", "ipa": "/u/", "pronunciationNote": "'u' in put" },
+        { "id": "08_uu", "order": 8, "name": "ඌ", "romanisation": "ū", "ipa": "/uː/", "pronunciationNote": "'oo' in boot" },
+        { "id": "09_e", "order": 9, "name": "එ", "romanisation": "e", "ipa": "/e/", "pronunciationNote": "'e' in met" },
+        { "id": "10_ee", "order": 10, "name": "ඒ", "romanisation": "ē", "ipa": "/eː/", "pronunciationNote": "'a' in gate" },
+        { "id": "11_ai", "order": 11, "name": "ඓ", "romanisation": "ai", "ipa": "/ai/", "pronunciationNote": "'i' in bite" },
+        { "id": "12_o", "order": 12, "name": "ඔ", "romanisation": "o", "ipa": "/o/", "pronunciationNote": "'o' in pot" },
+        { "id": "13_oo", "order": 13, "name": "ඕ", "romanisation": "ō", "ipa": "/oː/", "pronunciationNote": "'o' in note" },
+        { "id": "14_au", "order": 14, "name": "ඖ", "romanisation": "au", "ipa": "/au/", "pronunciationNote": "'ow' in cow" }
+      ]
+    },
+    {
+      "id": "consonants",
+      "name": "ව්‍යඤ්ජන — Consonants",
+      "letters": [
+        { "id": "21_ka", "order": 21, "name": "ක", "romanisation": "ka", "ipa": "/k/", "pronunciationNote": "'k' in skate; little breath", "exampleWord": "කර", "exampleHinglish": "kara", "exampleMeaning": "neck" },
+        { "id": "22_kha", "order": 22, "name": "ඛ", "romanisation": "kha", "ipa": "/kʰ/", "pronunciationNote": "aspirated ක; rare, mostly in Sanskrit loans" },
+        { "id": "23_ga", "order": 23, "name": "ග", "romanisation": "ga", "ipa": "/ɡ/", "pronunciationNote": "'g' in gold", "exampleWord": "ගස", "exampleHinglish": "gasa", "exampleMeaning": "tree" },
+        { "id": "24_gha", "order": 24, "name": "ඝ", "romanisation": "gha", "ipa": "/ɡʱ/", "pronunciationNote": "breathy g; rare" },
+        { "id": "25_nga", "order": 25, "name": "ඞ", "romanisation": "ṅa", "ipa": "/ŋ/", "pronunciationNote": "'ng' in king" },
+        { "id": "26_nnga", "order": 26, "name": "ඟ", "romanisation": "ṅga", "ipa": "/ⁿɡ/", "pronunciationNote": "prenasalised g — a faint n before the g. Distinctly Sinhala" },
+
+        { "id": "28_ca", "order": 28, "name": "ච", "romanisation": "ca", "ipa": "/tʃ/", "pronunciationNote": "'ch' in cheese" },
+        { "id": "29_cha", "order": 29, "name": "ඡ", "romanisation": "cha", "ipa": "/tʃʰ/", "pronunciationNote": "aspirated ච; rare" },
+        { "id": "30_ja", "order": 30, "name": "ජ", "romanisation": "ja", "ipa": "/dʒ/", "pronunciationNote": "'j' in jam" },
+        { "id": "31_jha", "order": 31, "name": "ඣ", "romanisation": "jha", "ipa": "/dʒʱ/", "pronunciationNote": "breathy j; very rare" },
+        { "id": "32_nya", "order": 32, "name": "ඤ", "romanisation": "ña", "ipa": "/ɲ/", "pronunciationNote": "'n' in onion" },
+        { "id": "33_nja", "order": 33, "name": "ඦ", "romanisation": "ñja", "ipa": "/ⁿdʒ/", "pronunciationNote": "prenasalised j" },
+
+        { "id": "35_tta", "order": 35, "name": "ට", "romanisation": "ṭa", "ipa": "/ʈ/", "pronunciationNote": "retroflex t — tongue curled back", "exampleWord": "ටැක්සි", "exampleHinglish": "taeksi", "exampleMeaning": "taxi" },
+        { "id": "36_ttha", "order": 36, "name": "ඨ", "romanisation": "ṭha", "ipa": "/ʈʰ/", "pronunciationNote": "aspirated ට" },
+        { "id": "37_dda", "order": 37, "name": "ඩ", "romanisation": "ḍa", "ipa": "/ɖ/", "pronunciationNote": "retroflex d" },
+        { "id": "38_ddha", "order": 38, "name": "ඪ", "romanisation": "ḍha", "ipa": "/ɖʱ/", "pronunciationNote": "breathy retroflex d; rare" },
+        { "id": "39_nna", "order": 39, "name": "ණ", "romanisation": "ṇa", "ipa": "/ɳ/", "pronunciationNote": "retroflex n" },
+        { "id": "40_ndda", "order": 40, "name": "ඬ", "romanisation": "ṇḍa", "ipa": "/ⁿɖ/", "pronunciationNote": "prenasalised retroflex d" },
+
+        { "id": "42_ta", "order": 42, "name": "ත", "romanisation": "ta", "ipa": "/t̪/", "pronunciationNote": "dental t — tongue against the teeth", "exampleWord": "තණ", "exampleHinglish": "thana", "exampleMeaning": "grass" },
+        { "id": "43_tha", "order": 43, "name": "ථ", "romanisation": "tha", "ipa": "/t̪ʰ/", "pronunciationNote": "aspirated ත" },
+        { "id": "44_da", "order": 44, "name": "ද", "romanisation": "da", "ipa": "/d̪/", "pronunciationNote": "dental d" },
+        { "id": "45_dha", "order": 45, "name": "ධ", "romanisation": "dha", "ipa": "/d̪ʱ/", "pronunciationNote": "breathy dental d" },
+        { "id": "46_na", "order": 46, "name": "න", "romanisation": "na", "ipa": "/n/", "pronunciationNote": "'n' in net" },
+        { "id": "47_nda", "order": 47, "name": "ඳ", "romanisation": "nda", "ipa": "/ⁿd̪/", "pronunciationNote": "prenasalised dental d" },
+
+        { "id": "49_pa", "order": 49, "name": "ප", "romanisation": "pa", "ipa": "/p/", "pronunciationNote": "'p' in spin; little breath", "exampleWord": "පාර", "exampleHinglish": "paara", "exampleMeaning": "road" },
+        { "id": "50_pha", "order": 50, "name": "ඵ", "romanisation": "pha", "ipa": "/pʰ/", "pronunciationNote": "aspirated ප" },
+        { "id": "51_ba", "order": 51, "name": "බ", "romanisation": "ba", "ipa": "/b/", "pronunciationNote": "'b' in bat" },
+        { "id": "52_bha", "order": 52, "name": "භ", "romanisation": "bha", "ipa": "/bʱ/", "pronunciationNote": "breathy b; rare" },
+        { "id": "53_ma", "order": 53, "name": "ම", "romanisation": "ma", "ipa": "/m/", "pronunciationNote": "'m' in map" },
+        { "id": "54_mba", "order": 54, "name": "ඹ", "romanisation": "mba", "ipa": "/ⁿb/", "pronunciationNote": "prenasalised b" },
+
+        { "id": "56_ya", "order": 56, "name": "ය", "romanisation": "ya", "ipa": "/j/", "pronunciationNote": "'y' in yes" },
+        { "id": "57_ra", "order": 57, "name": "ර", "romanisation": "ra", "ipa": "/r/", "pronunciationNote": "tapped r" },
+        { "id": "58_la", "order": 58, "name": "ල", "romanisation": "la", "ipa": "/l/", "pronunciationNote": "'l' in love" },
+        { "id": "59_va", "order": 59, "name": "ව", "romanisation": "va", "ipa": "/ʋ/", "pronunciationNote": "between English v and w", "exampleWord": "වතුර", "exampleHinglish": "wathura", "exampleMeaning": "water" },
+        { "id": "60_sha", "order": 60, "name": "ශ", "romanisation": "śa", "ipa": "/ʃ/", "pronunciationNote": "'sh' in ship" },
+        { "id": "61_ssha", "order": 61, "name": "ෂ", "romanisation": "ṣa", "ipa": "/ʃ/", "pronunciationNote": "retroflex sh; same sound as ශ in speech" },
+        { "id": "62_sa", "order": 62, "name": "ස", "romanisation": "sa", "ipa": "/s/", "pronunciationNote": "'s' in sun" },
+        { "id": "63_ha", "order": 63, "name": "හ", "romanisation": "ha", "ipa": "/h/", "pronunciationNote": "'h' in house" },
+        { "id": "64_lla", "order": 64, "name": "ළ", "romanisation": "ḷa", "ipa": "/ɭ/", "pronunciationNote": "retroflex l — tongue curled back" },
+        { "id": "65_fa", "order": 65, "name": "ෆ", "romanisation": "fa", "ipa": "/f/", "pronunciationNote": "'f' in fish; loanwords only" }
+      ]
+    }
+  ]
+}

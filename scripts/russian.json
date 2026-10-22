@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "russian",
+  "name": "Russian",
+  "script": "Cyrillic",
+  "audioDir": "russian",
+  "isDefault": false,
+  "groups": [
+    {
+      "id": "vowels",
+      "name": "Гласные (Vowels)",
+      "letters": [
+        { "id": "01_a", "order": 1, "name": "А", "romanisation": "a", "ipa": "/a/", "pronunciationNote": "'a' in father", "exampleWord": "арбуз", "exampleHinglish": "arbuz", "exampleMeaning": "watermelon" },
+        { "id": "02_ye", "order": 2, "name": "Е", "romanisation": "ye", "ipa": "/je/", "pronunciationNote": "'ye' in yes", "exampleWord": "ель", "exampleHinglish": "yel", "exampleMeaning": "fir tree" },
+        { "id": "03_yo", "order": 3, "name": "Ё", "romanisation": "yo", "ipa": "/jo/", "pronunciationNote": "'yo' in yonder; always stressed", "exampleWord": "ёж", "exampleHinglish": "yozh", "exampleMeaning": "hedgehog" },
+        { "id": "04_i", "order": 4, "name": "И", "romanisation": "i", "ipa": "/i/", "pronunciationNote": "'ee' in see", "exampleWord": "игла", "exampleHinglish": "igla", "exampleMeaning": "needle" },
+        { "id": "05_o", "order": 5, "name": "О", "romanisation": "o", "ipa": "/o/", "pronunciationNote": "'o' in more; unstressed sounds like 'a'", "exampleWord": "окно", "exampleHinglish": "okno", "exampleMeaning": "window" },
+        { "id": "06_u", "order": 6, "name": "У", "romanisation": "u", "ipa": "/u/", "pronunciationNote": "'oo' in boot", "exampleWord": "утка", "exampleHinglish": "utka", "exampleMeaning": "duck" },
+        { "id": "07_y", "order": 7, "name": "Ы", "romanisation": "y", "ipa": "/ɨ/", "pronunciationNote": "no English equivalent; 'i' said with the tongue pulled back", "exampleWord": "сыр", "exampleHinglish": "syr", "exampleMeaning": "cheese" },
+        { "id": "08_e", "order": 8, "name": "Э", "romanisation": "e", "ipa": "/e/", "pronunciationNote": "'e' in met", "exampleWord": "эхо", "exampleHinglish": "ekho", "exampleMeaning": "echo" },
+        { "id": "09_yu", "order": 9, "name": "Ю", "romanisation": "yu", "ipa": "/ju/", "pronunciationNote": "'u' in use", "exampleWord": "юг", "exampleHinglish": "yug", "exampleMeaning": "south" },
+        { "id": "10_ya", "order": 10, "name": "Я", "romanisation": "ya", "ipa": "/ja/", "pronunciationNote": "'ya' in yard", "exampleWord": "ягода", "exampleHinglish": "yagoda", "exampleMeaning": "berry" }
+      ]
+    },
+    {
+      "id": "consonants",
+      "name": "Согласные (Consonants)",
+      "letters": [
+        { "id": "21_b", "order": 21, "name": "Б", "romanisation": "b", "ipa": "/b/", "pronunciationNote": "'b' in bat", "exampleWord": "брат", "exampleHinglish": "brat", "exampleMeaning": "brother" },
+        { "id": "22_v", "order": 22, "name": "В", "romanisation": "v", "ipa": "/v/", "pronunciationNote": "'v' in vine", "exampleWord": "вода", "exampleHinglish": "voda", "exampleMeaning": "water" },
+        { "id": "23_g", "order": 23, "name": "Г", "romanisation": "g", "ipa": "/ɡ/", "pronunciationNote": "'g' in go", "exampleWord": "город", "exampleHinglish": "gorod", "exampleMeaning": "city" },
+        { "id": "24_d", "order": 24, "name": "Д", "romanisation": "d", "ipa": "/d/", "pronunciationNote": "'d' in dog", "exampleWord": "дом", "exampleHinglish": "dom", "exampleMeaning": "house" },
+        { "id": "25_zh", "order": 25, "name": "Ж", "romanisation": "zh", "ipa": "/ʐ/", "pronunciationNote": "'s' in measure", "exampleWord": "жук", "exampleHinglish": "zhuk", "exampleMeaning": "beetle" },
+        { "id": "26_z", "order": 26, "name": "З", "romanisation": "z", "ipa": "/z/", "pronunciationNote": "'z' in zoo", "exampleWord": "зима", "exampleHinglish": "zima", "exampleMeaning": "winter" },
+        { "id": "27_y", "order": 27, "name": "Й", "romanisation": "y", "ipa": "/j/", "pronunciationNote": "'y' in boy; short, never alone", "exampleWord": "йогурт", "exampleHinglish": "yogurt", "exampleMeaning": "yoghurt" },
+        { "id": "28_k", "order": 28, "name": "К", "romanisation": "k", "ipa": "/k/", "pronunciationNote": "'k' in skate; little breath", "exampleWord": "кот", "exampleHinglish": "kot", "exampleMeaning": "cat" },
+        { "id": "29_l", "order": 29, "name": "Л", "romanisation": "l", "ipa": "/l/", "pronunciationNote": "'l' in pull, darker than English", "exampleWord": "лес", "exampleHinglish": "les", "exampleMeaning": "forest" },
+        { "id": "30_m", "order": 30, "name": "М", "romanisation": "m", "ipa": "/m/", "pronunciationNote": "'m' in map", "exampleWord": "мама", "exampleHinglish": "mama", "exampleMeaning": "mum" },
+        { "id": "31_n", "order": 31, "name": "Н", "romanisation": "n", "ipa": "/n/", "pronunciationNote": "'n' in net", "exampleWord": "небо", "exampleHinglish": "nebo", "exampleMeaning": "sky" },
+        { "id": "32_p", "order": 32, "name": "П", "romanisation": "p", "ipa": "/p/", "pronunciationNote": "'p' in spin; little breath", "exampleWord": "парк", "exampleHinglish": "park", "exampleMeaning": "park" },
+        { "id": "33_r", "order": 33, "name": "Р", "romanisation": "r", "ipa": "/r/", "pronunciationNote": "rolled, as in Spanish perro", "exampleWord": "рука", "exampleHinglish": "ruka", "exampleMeaning": "hand" },
+        { "id": "34_s", "order": 34, "name": "С", "romanisation": "s", "ipa": "/s/", "pronunciationNote": "'s' in sun", "exampleWord": "солнце", "exampleHinglish": "solntse", "exampleMeaning": "sun" },
+        { "id": "35_t", "order": 35, "name": "Т", "romanisation": "t", "ipa": "/t/", "pronunciationNote": "'t' in stop; little breath", "exampleWord": "три", "exampleHinglish": "tri", "exampleMeaning": "three" },
+        { "id": "36_f", "order": 36, "name": "Ф", "romanisation": "f", "ipa": "/f/", "pronunciationNote": "'f' in fish", "exampleWord": "фильм", "exampleHinglish": "film", "exampleMeaning": "film" },
+        { "id": "37_kh", "order": 37, "name": "Х", "romanisation": "kh", "ipa": "/x/", "pronunciationNote": "'ch' in Scottish loch", "exampleWord": "хлеб", "exampleHinglish": "khleb", "exampleMeaning": "bread" },
+        { "id": "38_ts", "order": 38, "name": "Ц", "romanisation": "ts", "ipa": "/ts/", "pronunciationNote": "'ts' in cats", "exampleWord": "цветок", "exampleHinglish": "tsvetok", "exampleMeaning": "flower" },
+        { "id": "39_ch", "order": 39, "name": "Ч", "romanisation": "ch", "ipa": "/tɕ/", "pronunciationNote": "'ch' in cheese, softer", "exampleWord": "час", "exampleHinglish": "chas", "exampleMeaning": "hour" },
+        { "id": "40_sh", "order": 40, "name": "Ш", "romanisation": "sh", "ipa": "/ʂ/", "pronunciationNote": "'sh' in shop, tongue further back", "exampleWord": "школа", "exampleHinglish": "shkola", "exampleMeaning": "school" },
+        { "id": "41_shch", "order": 41, "name": "Щ", "romanisation": "shch", "ipa": "/ɕː/", "pronunciationNote": "long soft 'sh', as in fresh cheese", "exampleWord": "щука", "exampleHinglish": "shchuka", "exampleMeaning": "pike" }
+      ]
+    },
+    {
+      "id": "signs",
+      "name": "Знаки (Signs)",
+      "letters": [
+        { "id": "51_hard", "order": 51, "name": "Ъ", "romanisation": "ʺ", "ipa": "—", "pronunciationNote": "hard sign; no sound of its own, separates the preceding consonant", "exampleWord": "объект", "exampleHinglish": "obyekt", "exampleMeaning": "object" },
+        { "id": "52_soft", "order": 52, "name": "Ь", "romanisation": "ʹ", "ipa": "—", "pronunciationNote": "soft sign; no sound, softens the preceding consonant", "exampleWord": "соль", "exampleHinglish": "sol", "exampleMeaning": "salt" }
+      ]
+    }
+  ]
+}

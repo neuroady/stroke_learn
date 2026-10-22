@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "id": "mongolian",
+  "name": "Mongolian",
+  "script": "Mongolian (traditional)",
+  "audioDir": "mongolian",
+  "font": "NotoSansMongolian-Regular.ttf",
+  "isDefault": false,
+  "groups": [
+    {
+      "id": "vowels",
+      "name": "Vowels",
+      "letters": [
+        { "id": "01_a", "order": 1, "name": "ᠠ", "romanisation": "a", "ipa": "/a/", "pronunciationNote": "'a' in father" },
+        { "id": "02_e", "order": 2, "name": "ᠡ", "romanisation": "e", "ipa": "/ə/", "pronunciationNote": "'e' in the; shares its shape with a, distinguished by vowel harmony" },
+        { "id": "03_i", "order": 3, "name": "ᠢ", "romanisation": "i", "ipa": "/i/", "pronunciationNote": "'ee' in see" },
+        { "id": "04_o", "order": 4, "name": "ᠣ", "romanisation": "o", "ipa": "/ɔ/", "pronunciationNote": "'o' in more" },
+        { "id": "05_u", "order": 5, "name": "ᠤ", "romanisation": "u", "ipa": "/ʊ/", "pronunciationNote": "'u' in put; written like o" },
+        { "id": "06_oe", "order": 6, "name": "ᠥ", "romanisation": "ö", "ipa": "/o/", "pronunciationNote": "German ö, French eu" },
+        { "id": "07_ue", "order": 7, "name": "ᠦ", "romanisation": "ü", "ipa": "/u/", "pronunciationNote": "German ü, French u" }
+      ]
+    },
+    {
+      "id": "consonants",
+      "name": "Consonants",
+      "letters": [
+        { "id": "11_na", "order": 11, "name": "ᠨ", "romanisation": "na", "ipa": "/n/", "pronunciationNote": "'n' in net; a tooth with a dot" },
+        { "id": "12_ba", "order": 12, "name": "ᠪ", "romanisation": "ba", "ipa": "/p/", "pronunciationNote": "'b' in bat, unvoiced" },
+        { "id": "13_qa", "order": 13, "name": "ᠬ", "romanisation": "qa", "ipa": "/x/", "pronunciationNote": "'ch' in loch; used with back vowels" },
+        { "id": "14_ga", "order": 14, "name": "ᠭ", "romanisation": "ga", "ipa": "/ɡ/", "pronunciationNote": "'g' in gold" },
+        { "id": "15_ma", "order": 15, "name": "ᠮ", "romanisation": "ma", "ipa": "/m/", "pronunciationNote": "'m' in map" },
+        { "id": "16_la", "order": 16, "name": "ᠯ", "romanisation": "la", "ipa": "/ɮ/", "pronunciationNote": "an l with friction, between l and the 'll' of Welsh" },
+        { "id": "17_sa", "order": 17, "name": "ᠰ", "romanisation": "sa", "ipa": "/s/", "pronunciationNote": "'s' in sun" },
+        { "id": "18_sha", "order": 18, "name": "ᠱ", "romanisation": "ša", "ipa": "/ʃ/", "pronunciationNote": "'sh' in shop" },
+        { "id": "19_ta", "order": 19, "name": "ᠲ", "romanisation": "ta", "ipa": "/t/", "pronunciationNote": "'t' in stop" },
+        { "id": "20_da", "order": 20, "name": "ᠳ", "romanisation": "da", "ipa": "/d/", "pronunciationNote": "'d' in dog" },
+        { "id": "21_cha", "order": 21, "name": "ᠴ", "romanisation": "ča", "ipa": "/tʃ/", "pronunciationNote": "'ch' in cheese" },
+        { "id": "22_ja", "order": 22, "name": "ᠵ", "romanisation": "ǰa", "ipa": "/dʒ/", "pronunciationNote": "'j' in jam" },
+        { "id": "23_ya", "order": 23, "name": "ᠶ", "romanisation": "ya", "ipa": "/j/", "pronunciationNote": "'y' in yes" },
+        { "id": "24_ra", "order": 24, "name": "ᠷ", "romanisation": "ra", "ipa": "/r/", "pronunciationNote": "rolled r; never starts a native word" },
+        { "id": "25_wa", "order": 25, "name": "ᠸ", "romanisation": "wa", "ipa": "/w/", "pronunciationNote": "'w' in water" },
+        { "id": "26_fa", "order": 26, "name": "ᠹ", "romanisation": "fa", "ipa": "/f/", "pronunciationNote": "'f' in fish; loanwords only" },
+        { "id": "27_ka", "order": 27, "name": "ᠺ", "romanisation": "ka", "ipa": "/k/", "pronunciationNote": "'k' in kite; loanwords only" },
+        { "id": "28_tsa", "order": 28, "name": "ᠼ", "romanisation": "ca", "ipa": "/ts/", "pronunciationNote": "'ts' in cats" },
+        { "id": "29_za", "order": 29, "name": "ᠽ", "romanisation": "za", "ipa": "/dz/", "pronunciationNote": "'ds' in adds" },
+        { "id": "30_ha", "order": 30, "name": "ᠾ", "romanisation": "ha", "ipa": "/h/", "pronunciationNote": "'h' in house; loanwords only" }
+      ]
+    }
+  ]
+}

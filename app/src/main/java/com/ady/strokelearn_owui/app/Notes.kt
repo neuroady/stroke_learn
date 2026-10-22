@@ -13,7 +13,9 @@ data class Note(
     val id: String,
     val title: String,
     val body: String = "",
-    val url: String? = null
+    val url: String? = null,
+    /** Which script this note belongs to; null means it shows in every script. */
+    val scriptId: String? = null
 ) {
     val isBookmark get() = !url.isNullOrBlank()
 }
@@ -39,6 +41,10 @@ class NoteStore(context: Context) {
         if (loaded == null) save()
     }
 
+    /** Notes for one script, plus the global ones. Global first. */
+    fun forScript(scriptId: String?): List<Note> =
+        notes.filter { it.scriptId == null || it.scriptId == scriptId }
+            .sortedBy { it.scriptId != null }
     fun upsert(note: Note) {
         val index = notes.indexOfFirst { it.id == note.id }
         if (index >= 0) notes[index] = note else notes.add(note)
@@ -258,21 +264,216 @@ class NoteStore(context: Context) {
                 title = "Hindi pronunciation guide",
                 body = "Charts with English approximations for every letter, " +
                         "with audio. University of Texas at Austin, CC BY 4.0.",
-                url = "https://hindi.la.utexas.edu/resources/pronouncing-the-hindi-alphabet/"
+                url = "https://hindi.la.utexas.edu/resources/pronouncing-the-hindi-alphabet/",
+                scriptId = "hindi"
             ),
             Note(
                 id = "ref_script",
                 title = "The Hindi script",
                 body = "In-depth introduction to the writing system, including " +
                         "nasalization and conjuncts.",
-                url = "https://hindi.la.utexas.edu/resources/the-hindi-script/"
+                url = "https://hindi.la.utexas.edu/resources/the-hindi-script/",
+                scriptId = "hindi"
             ),
             Note(
                 id = "ref_quizlets",
                 title = "Script recognition practice",
                 body = "Quizlet decks for recognising letters at several levels.",
-                url = "https://hindi.la.utexas.edu/resources/hindi-script-recognition-quizlets/"
-            )
+                url = "https://hindi.la.utexas.edu/resources/hindi-script-recognition-quizlets/",
+                scriptId = "hindi"
+            ),
+            Note(
+                id = "intro_punjabi",
+                title = "About Gurmukhi",
+                scriptId = "punjabi",
+                body = """
+                    Gurmukhi — "from the mouth of the Guru" — was standardised in
+                    the 16th century by Guru Angad, the second Sikh Guru, to
+                    write Punjabi. Its 35 letters are called the paintee.
+
+                    If you know Devanagari, much will feel familiar: the same
+                    horizontal top line, a similar five-row consonant layout.
+                    But one difference matters a great deal.
+
+                    Punjabi is tonal, and Hindi is not. Five letters —
+                    ਘ ਝ ਢ ਧ ਭ — are not aspirates despite how they are usually
+                    transliterated. They are tone letters: they lower the pitch
+                    of the vowel that follows. ਘਰ is not "ghar" with a breathy g
+                    but "kàr" with a falling tone. Learners coming from Hindi
+                    reliably get this wrong, so it is worth hearing before you
+                    practise writing.
+
+                    The three letters at the start — ੳ ਅ ੲ — carry no sound of
+                    their own. They are stands for vowels, used when a word
+                    begins with one.
+
+                    Around 125 million people speak Punjabi. In Pakistan it is
+                    usually written in the Shahmukhi script instead, a Perso-
+                    Arabic alphabet, so the same language has two written forms
+                    that share no letters at all.
+                """.trimIndent()
+            ),
+            Note(
+                id = "intro_mongolian",
+                title = "About the Mongolian script",
+                scriptId = "mongolian",
+                body = """
+                    Traditional Mongolian is one of the very few scripts in the
+                    world written vertically, in columns running top to bottom,
+                    with the columns advancing left to right. It descends from
+                    Old Uyghur, which descends from Aramaic by way of Sogdian —
+                    the same distant ancestry as Hebrew and Arabic.
+
+                    It was adapted for Mongolian around 1204, reportedly on the
+                    order of Genghis Khan after his forces captured an Uyghur
+                    scribe. It has been in use ever since.
+
+                    TWO THINGS TO KNOW BEFORE YOU START
+
+                    This script set teaches isolated letter forms. In real
+                    writing, letters join into a continuous vertical stem and
+                    take different shapes depending on whether they are at the
+                    start, the middle, or the end of a word — a little like
+                    Arabic. Learning the isolated forms is the usual first step,
+                    but it is a first step.
+
+                    The app draws on a square canvas, which cannot express the
+                    vertical flow. Think of each glyph here as a letter in
+                    isolation rather than as it would appear on a page.
+
+                    Several letter pairs are written identically and
+                    distinguished only by vowel harmony and context — a and e
+                    share a shape, as do o and u. Mongolian readers resolve them
+                    from the word.
+
+                    In Mongolia itself, Cyrillic has been the everyday script
+                    since the 1940s, though the traditional script is taught in
+                    schools and used ceremonially. In Inner Mongolia, in China,
+                    it remains the standard script for around five million
+                    speakers.
+                """.trimIndent()
+            ),
+            Note(
+                id = "intro_geez",
+                title = "About Ge'ez and Amharic",
+                scriptId = "geez",
+                body = """
+                    The Ge'ez script — also called Ethiopic, or fidäl — is one of
+                    the oldest writing systems still in daily use, with roots in
+                    the Sabaean alphabet of South Arabia and inscriptions going
+                    back to the fourth century. It writes Amharic and Tigrinya
+                    today, and Ge'ez itself survives as the liturgical language
+                    of the Ethiopian Orthodox Church.
+
+                    It is an abugida, which means something specific. Each letter
+                    is a consonant carrying a built-in vowel, and the vowel is
+                    changed by modifying the letter's shape — a stroke added, a
+                    loop extended, the whole glyph tilted. Every consonant has
+                    seven such forms, called orders. The script therefore has 33
+                    base letters but well over 200 glyphs.
+
+                    This set gives you the first order, ግዕዝ, which is how the
+                    script is taught. Once these are solid, the vowel orders are
+                    learned as a pattern applied across all of them rather than
+                    as 200 separate shapes.
+
+                    A sound worth listening for: the ejectives — ቀ ጠ ጨ ጰ ጸ. These
+                    are made by closing the throat and releasing the consonant
+                    with a sharp pop rather than a breath. English has nothing
+                    like them, and they are the sound most learners find hardest.
+
+                    Some pairs of letters are now pronounced identically — ሀ, ሐ
+                    and ኀ all sound alike in modern Amharic — but all survive in
+                    spelling, much as English keeps silent letters.
+
+                    Ge'ez is written left to right, unlike its South Arabian
+                    ancestors and unlike Arabic and Hebrew.
+                """.trimIndent()
+            ),
+            Note(
+                id = "intro_sinhala",
+                title = "About Sinhala",
+                scriptId = "sinhala",
+                body = """
+                    Sinhala is written in one of the roundest scripts in the
+                    world. Almost every letter is built from curves and loops,
+                    with hardly a straight line anywhere — a shape the script
+                    acquired from being written on dried palm leaves, where a
+                    straight stroke would split the leaf along its fibres.
+
+                    It descends from Brahmi, like Devanagari and Tamil, and has
+                    been used in Sri Lanka for over two thousand years. Around 16
+                    million people speak Sinhala, almost all of them on the one
+                    island.
+
+                    TWO FEATURES WORTH KNOWING
+
+                    Sinhala has a sound Hindi does not: ඇ, the vowel in English
+                    "cat". It appears constantly, and is one of the first things
+                    that makes spoken Sinhala sound unlike its neighbours.
+
+                    More distinctive still are the prenasalised consonants —
+                    ඟ ඦ ඬ ඳ ඹ. These are single sounds with a faint nasal onset,
+                    not two letters run together: a brief hum before the
+                    consonant, as in the middle of "finger" said quickly. Very
+                    few scripts have dedicated letters for these, and they are
+                    the clearest mark of Sinhala's independence from the other
+                    Indic scripts.
+
+                    The consonants are arranged, as in Devanagari, by where in
+                    the mouth they are made: throat, palate, roof, teeth, lips.
+                    Several letters appear only in Sanskrit and Pali loanwords
+                    and are rare in everyday Sinhala — the aspirates ඛ ඝ ඡ ඣ in
+                    particular.
+
+                    Like Ge'ez and Devanagari, Sinhala is an abugida: each
+                    consonant carries a built-in vowel, changed by marks added
+                    around the letter.
+                """.trimIndent()
+            ),
+            Note(
+                id = "intro_shavian",
+                title = "About Shavian",
+                scriptId = "shavian",
+                body = """
+                    Shavian is the odd one out here: it is a constructed
+                    alphabet, barely seventy years old, and it writes English.
+
+                    George Bernard Shaw spent his life irritated by English
+                    spelling — by "ghoti" being pronounceable as "fish", by the
+                    Latin alphabet needing 26 letters and endless digraphs to
+                    represent some 40 English sounds. In his will he left money
+                    for a competition to design a replacement. Ronald Kingsley
+                    Read won it, and the alphabet was published in 1962.
+
+                    The design is the interesting part.
+
+                    Shavian has 48 letters, one per English sound, with no
+                    digraphs and no silent letters. The consonants come in pairs:
+                    a Tall letter for the voiceless sound, a Deep letter for its
+                    voiced partner, and the Deep letter is the Tall one rotated
+                    180 degrees. 𐑐 is p; turn it over and 𐑚 is b. 𐑑 is t, 𐑛 is d.
+                    𐑓 is f, 𐑝 is v. The relationship between the sounds is
+                    visible in the shapes.
+
+                    Vowels are Short — small letters sitting on the line — or
+                    Long, which extend above or below it. Some single letters
+                    cover whole sounds that English spells with several, like
+                    𐑸 for "are" and 𐑿 for "yew".
+
+                    There is no capital and lowercase distinction. Proper names
+                    take a leading dot instead.
+
+                    Almost nobody writes Shavian, which is rather the appeal.
+                    There is a small, cheerful community, an edition of Androcles
+                    and the Lion printed in it as Shaw's will required, and the
+                    curious experience of writing your own language in letters
+                    that nobody around you can read.
+
+                    Shavian is in Unicode and in the public domain. Reading it
+                    fluently takes a few weeks.
+                """.trimIndent()
+            ),
         )
 
         private const val KEY = "notes"

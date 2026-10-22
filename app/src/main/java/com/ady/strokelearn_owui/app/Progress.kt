@@ -85,6 +85,11 @@ class ProgressStore(context: Context) {
         save()
         incoming.size
     }
+    /** Wipes a glyph's history, as if it had never been seen. */
+    fun reset(scriptId: String, letterId: String) {
+        entries[key(scriptId, letterId)] = LetterProgress()
+        save()
+    }
     private fun put(scriptId: String, letterId: String, value: LetterProgress) {
         entries[key(scriptId, letterId)] = value
         save()

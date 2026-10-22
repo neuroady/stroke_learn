@@ -26,6 +26,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 import kotlin.math.hypot
 import kotlin.math.pow
+import android.graphics.Typeface
+import androidx.compose.ui.platform.LocalContext
 
 private const val INK_WIDTH = 14f
 
@@ -163,7 +165,6 @@ private fun DrawScope.drawGuides(guide: Color) {
 }
 /** Fraction of the canvas the guide glyph's ink should span. */
 private const val GUIDE_GLYPH_FILL = 0.85f
-
 /**
  * Draws a character faintly behind the canvas, scaled so its ink spans
  * [GUIDE_GLYPH_FILL] of the drawing area.
@@ -172,7 +173,7 @@ private const val GUIDE_GLYPH_FILL = 0.85f
  * because the layout box includes ascent and descent padding — mostly empty air
  * around a single glyph, which would leave it looking far too small.
  */
-private fun DrawScope.drawGuideGlyph(glyph: String, tint: Color) {
+private fun DrawScope.drawGuideGlyph(glyph: String, tint: Color, typeface: Typeface?) {
     if (glyph.isBlank()) return
     val side = size.minDimension
     val target = side * GUIDE_GLYPH_FILL
@@ -180,7 +181,8 @@ private fun DrawScope.drawGuideGlyph(glyph: String, tint: Color) {
     val paint = android.graphics.Paint().apply {
         isAntiAlias = true
         color = tint.toArgb()
-        textSize = 100f                                     // reference size
+        textSize = 100f
+        typeface?.let { this.typeface = it }
     }
 
     val bounds = android.graphics.Rect()
@@ -189,15 +191,23 @@ private fun DrawScope.drawGuideGlyph(glyph: String, tint: Color) {
     if (largest <= 0) return
 
     paint.textSize = 100f * (target / largest)
-
-    // re-measure at the final size, then centre on the ink box
     paint.getTextBounds(glyph, 0, glyph.length, bounds)
+
     val x = (side - bounds.width()) / 2f - bounds.left
     val y = (side - bounds.height()) / 2f - bounds.top
-
     drawContext.canvas.nativeCanvas.drawText(glyph, x, y, paint)
 }
 
+/** Loads a font from assets, or null to use the system font. */
+@Composable
+fun rememberScriptTypeface(fontFile: String?): Typeface? {
+    val context = LocalContext.current
+    return remember(fontFile) {
+        fontFile?.let {
+            runCatching { Typeface.createFromAsset(context.assets, "fonts/$it") }.getOrNull()
+        }
+    }
+}
 
 /* ==================== input canvas ==================== */
 
@@ -215,6 +225,8 @@ fun DrawingCanvas(
     enabled: Boolean = true,
     inkColor: Color = MaterialTheme.colorScheme.onSurface,
     guideGlyph: String = "",
+    guideTypeface: Typeface? = null,
+    strongGuide: Boolean = false,
     overlay: DrawScope.() -> Unit = {}
 ) {
     var current by remember { mutableStateOf<List<Offset>>(emptyList()) }
@@ -223,7 +235,7 @@ fun DrawingCanvas(
     // derived from the ink so the canvas inverts cleanly in dark mode
     val paper = MaterialTheme.colorScheme.surface
     val guideColor = inkColor.copy(alpha = 0.13f)
-    val glyphColor = inkColor.copy(alpha = 0.10f)
+    val glyphColor = inkColor.copy(alpha = if (strongGuide) 0.28f else 0.10f)
     val borderColor = inkColor.copy(alpha = 0.20f)
 
     Canvas(
@@ -254,7 +266,7 @@ fun DrawingCanvas(
                 }
             )
     ) {
-        drawGuideGlyph(guideGlyph, glyphColor)
+        drawGuideGlyph(guideGlyph, glyphColor, guideTypeface)
         drawGuides(guideColor)
         overlay()
         strokes.forEach { drawStroke(it, inkColor) }

@@ -1,0 +1,333 @@
+{
+  "schemaVersion": 1,
+  "id": "georgian",
+  "name": "Georgian",
+  "script": "Mkhedruli",
+  "audioDir": "georgian",
+  "isDefault": false,
+  "groups": [
+    {
+      "id": "vowels",
+      "name": "ხმოვნები (Vowels)",
+      "letters": [
+        {
+          "id": "01_an",
+          "order": 1,
+          "name": "ა",
+          "romanisation": "a",
+          "ipa": "/ɑ/",
+          "pronunciationNote": "'a' in father",
+          "exampleWord": "ასი",
+          "exampleHinglish": "asi",
+          "exampleMeaning": "hundred",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "02_en",
+          "order": 2,
+          "name": "ე",
+          "romanisation": "e",
+          "ipa": "/ɛ/",
+          "pronunciationNote": "'e' in bed",
+          "exampleWord": "ერთი",
+          "exampleHinglish": "erti",
+          "exampleMeaning": "one",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "03_in",
+          "order": 3,
+          "name": "ი",
+          "romanisation": "i",
+          "ipa": "/i/",
+          "pronunciationNote": "'ee' in see",
+          "exampleWord": "ია",
+          "exampleHinglish": "ia",
+          "exampleMeaning": "violet (flower)",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "04_on",
+          "order": 4,
+          "name": "ო",
+          "romanisation": "o",
+          "ipa": "/ɔ/",
+          "pronunciationNote": "'o' in more",
+          "exampleWord": "ოთახი",
+          "exampleHinglish": "otakhi",
+          "exampleMeaning": "room",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "05_un",
+          "order": 5,
+          "name": "უ",
+          "romanisation": "u",
+          "ipa": "/u/",
+          "pronunciationNote": "'oo' in boot",
+          "exampleWord": "უდაბნო",
+          "exampleHinglish": "udabno",
+          "exampleMeaning": "desert",
+          "audio": null,
+          "strokes": []
+        }
+      ]
+    },
+    {
+      "id": "familiar",
+      "name": "Familiar consonants",
+      "letters": [
+        {
+          "id": "11_ban",
+          "order": 11,
+          "name": "ბ",
+          "romanisation": "b",
+          "ipa": "/b/",
+          "pronunciationNote": "'b' in boy",
+          "exampleWord": "ბავშვი",
+          "exampleHinglish": "bavshvi",
+          "exampleMeaning": "child",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "12_gan",
+          "order": 12,
+          "name": "გ",
+          "romanisation": "g",
+          "ipa": "/ɡ/",
+          "pronunciationNote": "hard 'g' in good",
+          "exampleWord": "გული",
+          "exampleHinglish": "guli",
+          "exampleMeaning": "heart",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "13_don",
+          "order": 13,
+          "name": "დ",
+          "romanisation": "d",
+          "ipa": "/d/",
+          "pronunciationNote": "'d' in door",
+          "exampleWord": "დედა",
+          "exampleHinglish": "deda",
+          "exampleMeaning": "mother",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "14_vin",
+          "order": 14,
+          "name": "ვ",
+          "romanisation": "v",
+          "ipa": "/v/",
+          "pronunciationNote": "'v' in van",
+          "exampleWord": "ვაშლი",
+          "exampleHinglish": "vashli",
+          "exampleMeaning": "apple",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "15_zen",
+          "order": 15,
+          "name": "ზ",
+          "romanisation": "z",
+          "ipa": "/z/",
+          "pronunciationNote": "'z' in zoo",
+          "exampleWord": "ზღვა",
+          "exampleHinglish": "zghva",
+          "exampleMeaning": "sea",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "16_las",
+          "order": 16,
+          "name": "ლ",
+          "romanisation": "l",
+          "ipa": "/l/",
+          "pronunciationNote": "'l' in lion",
+          "exampleWord": "ლომი",
+          "exampleHinglish": "lomi",
+          "exampleMeaning": "lion",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "17_man",
+          "order": 17,
+          "name": "მ",
+          "romanisation": "m",
+          "ipa": "/m/",
+          "pronunciationNote": "'m' in moon",
+          "exampleWord": "მამა",
+          "exampleHinglish": "mama",
+          "exampleMeaning": "father",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "18_nar",
+          "order": 18,
+          "name": "ნ",
+          "romanisation": "n",
+          "ipa": "/n/",
+          "pronunciationNote": "'n' in night",
+          "exampleWord": "ნათელი",
+          "exampleHinglish": "nateli",
+          "exampleMeaning": "light",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "19_rae",
+          "order": 19,
+          "name": "რ",
+          "romanisation": "r",
+          "ipa": "/r/",
+          "pronunciationNote": "rolled, as in Spanish 'perro'",
+          "exampleWord": "რძე",
+          "exampleHinglish": "rdze",
+          "exampleMeaning": "milk",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "20_san",
+          "order": 20,
+          "name": "ს",
+          "romanisation": "s",
+          "ipa": "/s/",
+          "pronunciationNote": "'s' in sun",
+          "exampleWord": "სახლი",
+          "exampleHinglish": "sakhli",
+          "exampleMeaning": "house",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "21_shin",
+          "order": 21,
+          "name": "შ",
+          "romanisation": "sh",
+          "ipa": "/ʃ/",
+          "pronunciationNote": "'sh' in ship",
+          "exampleWord": "შავი",
+          "exampleHinglish": "shavi",
+          "exampleMeaning": "black",
+          "audio": null,
+          "strokes": []
+        }
+      ]
+    },
+    {
+      "id": "aspirated",
+      "name": "Aspirated consonants",
+      "letters": [
+        {
+          "id": "31_tan",
+          "order": 31,
+          "name": "თ",
+          "romanisation": "t",
+          "ipa": "/tʰ/",
+          "pronunciationNote": "'t' in top — with a puff of air",
+          "exampleWord": "თვალი",
+          "exampleHinglish": "tvali",
+          "exampleMeaning": "eye",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "32_par",
+          "order": 32,
+          "name": "ფ",
+          "romanisation": "p",
+          "ipa": "/pʰ/",
+          "pronunciationNote": "'p' in pin — with a puff of air",
+          "exampleWord": "ფანჯარა",
+          "exampleHinglish": "panjara",
+          "exampleMeaning": "window",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "33_kan",
+          "order": 33,
+          "name": "ქ",
+          "romanisation": "k",
+          "ipa": "/kʰ/",
+          "pronunciationNote": "'k' in kite — with a puff of air",
+          "exampleWord": "ქალი",
+          "exampleHinglish": "kali",
+          "exampleMeaning": "woman",
+          "audio": null,
+          "strokes": []
+        }
+      ]
+    },
+    {
+      "id": "ejectives",
+      "name": "Ejective consonants",
+      "letters": [
+        {
+          "id": "41_kan_ejective",
+          "order": 41,
+          "name": "კ",
+          "romanisation": "k'",
+          "ipa": "/kʼ/",
+          "pronunciationNote": "sharp 'k' with no breath — throat closed, air popped out",
+          "exampleWord": "კაცი",
+          "exampleHinglish": "katsi",
+          "exampleMeaning": "man",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "42_par_ejective",
+          "order": 42,
+          "name": "პ",
+          "romanisation": "p'",
+          "ipa": "/pʼ/",
+          "pronunciationNote": "sharp 'p' with no breath",
+          "exampleWord": "პური",
+          "exampleHinglish": "p'uri",
+          "exampleMeaning": "bread",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "43_tar_ejective",
+          "order": 43,
+          "name": "ტ",
+          "romanisation": "t'",
+          "ipa": "/tʼ/",
+          "pronunciationNote": "sharp 't' with no breath",
+          "exampleWord": "ტყე",
+          "exampleHinglish": "t'q'e",
+          "exampleMeaning": "forest",
+          "audio": null,
+          "strokes": []
+        },
+        {
+          "id": "44_qar",
+          "order": 44,
+          "name": "ყ",
+          "romanisation": "q'",
+          "ipa": "/qʼ/",
+          "pronunciationNote": "ejective made far back in the throat — no English equivalent",
+          "exampleWord": "ყავა",
+          "exampleHinglish": "q'ava",
+          "exampleMeaning": "coffee",
+          "audio": null,
+          "strokes": []
+        }
+      ]
+    }
+  ]
+}

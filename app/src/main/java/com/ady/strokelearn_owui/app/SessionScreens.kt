@@ -141,11 +141,7 @@ fun SessionChooserScreen(
                         "trained on.",
                 onClick = { onPick(SessionKind.TEST) }
             )
-            SessionOption(
-                title = "Final exam",
-                body = "Every glyph in the script, no guides at all.",
-                onClick = { onPick(SessionKind.EXAM) }
-            )
+
         }
     }
 }
@@ -184,17 +180,24 @@ fun SessionSetupScreen(
 ) {
     val script = state.current ?: return
 
-    val pool = remember(script.id, kind) {
+    var includeLearned by remember { mutableStateOf(false) }
+
+    val pool = remember(script.id, kind, includeLearned) {
         when (kind) {
             SessionKind.TRAINING -> progress.notLearned(script)
             SessionKind.TEST -> progress.encountered(script)
-                .filter { progress.of(script.id, it.id).status != LearningStatus.LEARNED }
+                .filter {
+                    includeLearned ||
+                            progress.of(script.id, it.id).status != LearningStatus.LEARNED
+                }
             SessionKind.EXAM -> script.allLetters
         }.filter { it.strokes.isNotEmpty() }
     }
 
-    var count by remember { mutableIntStateOf(minOf(5, pool.size)) }
-    var selected by remember { mutableStateOf(pool.shuffled().take(count).map { it.id }.toSet()) }
+    var count by remember(pool) { mutableIntStateOf(minOf(5, pool.size)) }
+    var selected by remember(pool) {
+        mutableStateOf(pool.shuffled().take(minOf(5, pool.size)).map { it.id }.toSet())
+    }
     var reps by remember { mutableIntStateOf(3) }
     var picking by remember { mutableStateOf(false) }
     var scoring by remember { mutableStateOf(false) }
@@ -298,6 +301,26 @@ fun SessionSetupScreen(
                         )
                     }
                     Switch(checked = scoring, onCheckedChange = { scoring = it })
+                }
+            }
+            if (kind == SessionKind.TEST) {
+                Spacer(Modifier.height(12.dp))
+                Row(
+                    Modifier.fillMaxWidth().clickable { includeLearned = !includeLearned },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Include learned glyphs", fontSize = 17.sp)
+                        Text(
+                            "Revision — brings back glyphs you have already marked learned.",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    Switch(
+                        checked = includeLearned,
+                        onCheckedChange = { includeLearned = it }
+                    )
                 }
             }
             Spacer(Modifier.height(12.dp))
@@ -492,6 +515,7 @@ fun SessionRunnerScreen(
     val inkColor = MaterialTheme.colorScheme.onSurface
     val ghostColor = inkColor.copy(alpha = 0.28f)
     val boxColor = inkColor.copy(alpha = 0.22f)
+    val guideTypeface = rememberScriptTypeface(script.font)
 
     // the sound is part of the prompt, so it plays when the glyph appears and
     // again once the drawing is done
@@ -595,6 +619,7 @@ fun SessionRunnerScreen(
                 enabled = !checked && !trainingDone,
                 guideGlyph = if (config.showGuideGlyph && settings.showGuideGlyph)
                     letter.name else "",
+                guideTypeface = guideTypeface,
                 onStrokeFinished = { stroke ->
                     drawn.add(stroke)
                     if (training) {
@@ -744,11 +769,26 @@ fun SessionSummaryScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
-            Text(
-                "Mark each glyph. Learned ones are left out of future sessions.",
-                fontSize = 15.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Surface(
+                color = MaterialTheme.colorScheme.secondaryContainer,
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Column(
+                    Modifier.padding(14.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text("Be honest with yourself", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        "Compare what you drew against the shape behind it. Mark a " +
+                                "glyph learned only if you could write it again tomorrow " +
+                                "without help — the app takes you at your word and drops " +
+                                "learned glyphs from future sessions. When in doubt, leave " +
+                                "it as learning. You can change either one later from the " +
+                                "home screen.",
+                        fontSize = 15.sp
+                    )
+                }
+            }
 
             byLetter.forEach { result ->
                 SummaryRow(script.id, result, scored, progress)

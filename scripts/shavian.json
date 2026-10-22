@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "id": "shavian",
+  "name": "Shavian",
+  "script": "Shavian (constructed)",
+  "audioDir": "shavian",
+  "font": "InterAlia-Regular.otf",
+  "isDefault": false,
+  "groups": [
+    {
+      "id": "tall",
+      "name": "Tall — voiceless consonants",
+      "letters": [
+        { "id": "01_peep", "order": 1, "name": "𐑐", "romanisation": "p", "ipa": "/p/", "pronunciationNote": "'p' in peep", "exampleWord": "peep" },
+        { "id": "02_tot", "order": 2, "name": "𐑑", "romanisation": "t", "ipa": "/t/", "pronunciationNote": "'t' in tot", "exampleWord": "tot" },
+        { "id": "03_kick", "order": 3, "name": "𐑒", "romanisation": "k", "ipa": "/k/", "pronunciationNote": "'k' in kick", "exampleWord": "kick" },
+        { "id": "04_fee", "order": 4, "name": "𐑓", "romanisation": "f", "ipa": "/f/", "pronunciationNote": "'f' in fee", "exampleWord": "fee" },
+        { "id": "05_thigh", "order": 5, "name": "𐑔", "romanisation": "th", "ipa": "/θ/", "pronunciationNote": "'th' in thigh — voiceless", "exampleWord": "thigh" },
+        { "id": "06_so", "order": 6, "name": "𐑕", "romanisation": "s", "ipa": "/s/", "pronunciationNote": "'s' in so", "exampleWord": "so" },
+        { "id": "07_sure", "order": 7, "name": "𐑖", "romanisation": "sh", "ipa": "/ʃ/", "pronunciationNote": "'s' in sure", "exampleWord": "sure" },
+        { "id": "08_church", "order": 8, "name": "𐑗", "romanisation": "ch", "ipa": "/tʃ/", "pronunciationNote": "'ch' in church", "exampleWord": "church" },
+        { "id": "09_yea", "order": 9, "name": "𐑘", "romanisation": "y", "ipa": "/j/", "pronunciationNote": "'y' in yea", "exampleWord": "yea" },
+        { "id": "10_hung", "order": 10, "name": "𐑙", "romanisation": "ng", "ipa": "/ŋ/", "pronunciationNote": "'ng' in hung", "exampleWord": "hung" }
+      ]
+    },
+    {
+      "id": "deep",
+      "name": "Deep — voiced consonants",
+      "letters": [
+        { "id": "11_bib", "order": 11, "name": "𐑚", "romanisation": "b", "ipa": "/b/", "pronunciationNote": "'b' in bib — the mirror of 𐑐", "exampleWord": "bib" },
+        { "id": "12_dead", "order": 12, "name": "𐑛", "romanisation": "d", "ipa": "/d/", "pronunciationNote": "'d' in dead — the mirror of 𐑑", "exampleWord": "dead" },
+        { "id": "13_gag", "order": 13, "name": "𐑜", "romanisation": "g", "ipa": "/ɡ/", "pronunciationNote": "'g' in gag — the mirror of 𐑒", "exampleWord": "gag" },
+        { "id": "14_vow", "order": 14, "name": "𐑝", "romanisation": "v", "ipa": "/v/", "pronunciationNote": "'v' in vow — the mirror of 𐑓", "exampleWord": "vow" },
+        { "id": "15_they", "order": 15, "name": "𐑞", "romanisation": "dh", "ipa": "/ð/", "pronunciationNote": "'th' in they — voiced", "exampleWord": "they" },
+        { "id": "16_zoo", "order": 16, "name": "𐑟", "romanisation": "z", "ipa": "/z/", "pronunciationNote": "'z' in zoo", "exampleWord": "zoo" },
+        { "id": "17_measure", "order": 17, "name": "𐑠", "romanisation": "zh", "ipa": "/ʒ/", "pronunciationNote": "'s' in measure", "exampleWord": "measure" },
+        { "id": "18_judge", "order": 18, "name": "𐑡", "romanisation": "j", "ipa": "/dʒ/", "pronunciationNote": "'j' in judge", "exampleWord": "judge" },
+        { "id": "19_woe", "order": 19, "name": "𐑢", "romanisation": "w", "ipa": "/w/", "pronunciationNote": "'w' in woe", "exampleWord": "woe" },
+        { "id": "20_haha", "order": 20, "name": "𐑣", "romanisation": "h", "ipa": "/h/", "pronunciationNote": "'h' in ha-ha", "exampleWord": "haha" },
+        { "id": "21_loll", "order": 21, "name": "𐑤", "romanisation": "l", "ipa": "/l/", "pronunciationNote": "'l' in loll", "exampleWord": "loll" },
+        { "id": "22_mime", "order": 22, "name": "𐑥", "romanisation": "m", "ipa": "/m/", "pronunciationNote": "'m' in mime", "exampleWord": "mime" },
+        { "id": "23_nun", "order": 23, "name": "𐑯", "romanisation": "n", "ipa": "/n/", "pronunciationNote": "'n' in nun", "exampleWord": "nun" },
+        { "id": "24_roar", "order": 24, "name": "𐑮", "romanisation": "r", "ipa": "/r/", "pronunciationNote": "'r' in roar", "exampleWord": "roar" }
+      ]
+    },
+    {
+      "id": "short",
+      "name": "Short vowels",
+      "letters": [
+        { "id": "31_if", "order": 31, "name": "𐑦", "romanisation": "i", "ipa": "/ɪ/", "pronunciationNote": "'i' in if", "exampleWord": "if" },
+        { "id": "32_egg", "order": 32, "name": "𐑧", "romanisation": "e", "ipa": "/ɛ/", "pronunciationNote": "'e' in egg", "exampleWord": "egg" },
+        { "id": "33_ash", "order": 33, "name": "𐑨", "romanisation": "a", "ipa": "/æ/", "pronunciationNote": "'a' in ash", "exampleWord": "ash" },
+        { "id": "34_ado", "order": 34, "name": "𐑩", "romanisation": "ə", "ipa": "/ə/", "pronunciationNote": "the unstressed vowel in ado — English's commonest sound", "exampleWord": "ado" },
+        { "id": "35_on", "order": 35, "name": "𐑪", "romanisation": "o", "ipa": "/ɒ/", "pronunciationNote": "'o' in on", "exampleWord": "on" },
+        { "id": "36_wool", "order": 36, "name": "𐑫", "romanisation": "u", "ipa": "/ʊ/", "pronunciationNote": "'oo' in wool", "exampleWord": "wool" },
+        { "id": "37_up", "order": 37, "name": "𐑳", "romanisation": "ʌ", "ipa": "/ʌ/", "pronunciationNote": "'u' in up", "exampleWord": "up" }
+      ]
+    },
+    {
+      "id": "long",
+      "name": "Long vowels and diphthongs",
+      "letters": [
+        { "id": "41_eat", "order": 41, "name": "𐑰", "romanisation": "ee", "ipa": "/iː/", "pronunciationNote": "'ea' in eat", "exampleWord": "eat" },
+        { "id": "42_age", "order": 42, "name": "𐑱", "romanisation": "ay", "ipa": "/eɪ/", "pronunciationNote": "'a' in age", "exampleWord": "age" },
+        { "id": "43_ice", "order": 43, "name": "𐑲", "romanisation": "igh", "ipa": "/aɪ/", "pronunciationNote": "'i' in ice", "exampleWord": "ice" },
+        { "id": "44_oak", "order": 44, "name": "𐑴", "romanisation": "oh", "ipa": "/əʊ/", "pronunciationNote": "'oa' in oak", "exampleWord": "oak" },
+        { "id": "45_ooze", "order": 45, "name": "𐑵", "romanisation": "oo", "ipa": "/uː/", "pronunciationNote": "'oo' in ooze", "exampleWord": "ooze" },
+        { "id": "46_oil", "order": 46, "name": "𐑶", "romanisation": "oy", "ipa": "/ɔɪ/", "pronunciationNote": "'oi' in oil", "exampleWord": "oil" },
+        { "id": "47_out", "order": 47, "name": "𐑬", "romanisation": "ow", "ipa": "/aʊ/", "pronunciationNote": "'ou' in out", "exampleWord": "out" },
+        { "id": "48_ah", "order": 48, "name": "𐑭", "romanisation": "ah", "ipa": "/ɑː/", "pronunciationNote": "'a' in father", "exampleWord": "ah" },
+        { "id": "49_awe", "order": 49, "name": "𐑷", "romanisation": "aw", "ipa": "/ɔː/", "pronunciationNote": "'aw' in awe", "exampleWord": "awe" },
+        { "id": "50_are", "order": 50, "name": "𐑸", "romanisation": "ar", "ipa": "/ɑːr/", "pronunciationNote": "'are' — a letter for the whole sound", "exampleWord": "are" },
+        { "id": "51_or", "order": 51, "name": "𐑹", "romanisation": "or", "ipa": "/ɔːr/", "pronunciationNote": "'or' in or", "exampleWord": "or" },
+        { "id": "52_air", "order": 52, "name": "𐑺", "romanisation": "air", "ipa": "/ɛər/", "pronunciationNote": "'air' in air", "exampleWord": "air" },
+        { "id": "53_err", "order": 53, "name": "𐑻", "romanisation": "er", "ipa": "/ɜːr/", "pronunciationNote": "'err' in err", "exampleWord": "err" },
+        { "id": "54_array", "order": 54, "name": "𐑼", "romanisation": "ər", "ipa": "/ər/", "pronunciationNote": "the ending of array, butter" },
+        { "id": "55_ear", "order": 55, "name": "𐑽", "romanisation": "ear", "ipa": "/ɪər/", "pronunciationNote": "'ear' in ear", "exampleWord": "ear" },
+        { "id": "56_ian", "order": 56, "name": "𐑾", "romanisation": "ia", "ipa": "/iə/", "pronunciationNote": "'ia' in Ian" },
+        { "id": "57_yew", "order": 57, "name": "𐑿", "romanisation": "yoo", "ipa": "/juː/", "pronunciationNote": "'ew' in yew", "exampleWord": "yew" }
+      ]
+    }
+  ]
+}

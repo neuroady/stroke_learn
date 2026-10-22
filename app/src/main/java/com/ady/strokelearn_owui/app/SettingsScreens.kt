@@ -369,15 +369,22 @@ private fun ScriptExport(state: AppState) {
 
     val selected = state.scripts.firstOrNull { it.id == selectedId }
 
+    val bundle = remember { ScriptBundle(context) }
+    val withAudio = selected?.let { bundle.hasRecordings(it) } == true
+
     val saveFile = rememberLauncherForActivityResult(
-        ActivityResultContracts.CreateDocument("application/json")
+        ActivityResultContracts.CreateDocument("application/octet-stream")
     ) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
-        val id = selectedId
-        status = if (id == null) "No script selected."
+        val script = selected
+        status = if (script == null) "No script selected."
         else runCatching {
-            val json = state.exportScript(id) ?: error("Script not found")
-            context.contentResolver.openOutputStream(uri)?.use { it.write(json.toByteArray()) }
+            val json = state.exportScript(script.id) ?: error("Script not found")
+            context.contentResolver.openOutputStream(uri)?.use { out ->
+                // zip only when there is audio to carry; otherwise plain JSON
+                if (bundle.hasRecordings(script)) bundle.writeZip(script, json, out)
+                else out.write(json.toByteArray())
+            }
         }.fold(
             onSuccess = { "Exported." },
             onFailure = { e -> "Export failed: ${e.message}" }
@@ -417,10 +424,22 @@ private fun ScriptExport(state: AppState) {
         }
 
         OutlinedButton(
-            onClick = { selected?.let { saveFile.launch("${it.id}.json") } },
+            onClick = {
+                selected?.let {
+                    saveFile.launch(if (withAudio) "${it.id}.zip" else "${it.id}.json")
+                }
+            },
             enabled = selected != null,
             modifier = Modifier.fillMaxWidth()
-        ) { Text("Export script") }
+        ) { Text(if (withAudio) "Export script + audio" else "Export script") }
+
+        if (withAudio) {
+            Text(
+                "${bundle.recordings(selected!!).size} recordings will be included.",
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
 
         status?.let {
             Text(it, fontSize = 14.sp, color = MaterialTheme.colorScheme.primary)

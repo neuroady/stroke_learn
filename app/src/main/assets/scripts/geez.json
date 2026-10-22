@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "id": "geez",
+  "name": "Amharic",
+  "script": "Ge'ez (Ethiopic)",
+  "audioDir": "geez",
+  "isDefault": false,
+  "groups": [
+    {
+      "id": "base",
+      "name": "ግዕዝ — base forms",
+      "letters": [
+        { "id": "01_ha", "order": 1, "name": "ሀ", "romanisation": "hä", "ipa": "/h/", "pronunciationNote": "'h' in house", "exampleWord": "ሀገር", "exampleHinglish": "hager", "exampleMeaning": "country" },
+        { "id": "02_le", "order": 2, "name": "ለ", "romanisation": "lä", "ipa": "/l/", "pronunciationNote": "'l' in love", "exampleWord": "ልብ", "exampleHinglish": "lib", "exampleMeaning": "heart" },
+        { "id": "03_hha", "order": 3, "name": "ሐ", "romanisation": "ḥä", "ipa": "/h/", "pronunciationNote": "once a pharyngeal h; now the same as ሀ in Amharic" },
+        { "id": "04_me", "order": 4, "name": "መ", "romanisation": "mä", "ipa": "/m/", "pronunciationNote": "'m' in map", "exampleWord": "መስኮት", "exampleHinglish": "meskot", "exampleMeaning": "window" },
+        { "id": "05_se", "order": 5, "name": "ሠ", "romanisation": "śä", "ipa": "/s/", "pronunciationNote": "once a separate s; now the same as ሰ" },
+        { "id": "06_re", "order": 6, "name": "ረ", "romanisation": "rä", "ipa": "/r/", "pronunciationNote": "tapped r, as in Spanish pero", "exampleWord": "ራስ", "exampleHinglish": "ras", "exampleMeaning": "head" },
+        { "id": "07_sse", "order": 7, "name": "ሰ", "romanisation": "sä", "ipa": "/s/", "pronunciationNote": "'s' in sun", "exampleWord": "ሰው", "exampleHinglish": "sew", "exampleMeaning": "person" },
+        { "id": "08_she", "order": 8, "name": "ሸ", "romanisation": "šä", "ipa": "/ʃ/", "pronunciationNote": "'sh' in shop" },
+        { "id": "09_qe", "order": 9, "name": "ቀ", "romanisation": "ḳä", "ipa": "/kʼ/", "pronunciationNote": "ejective k — said with a catch in the throat, no breath", "exampleWord": "ቀን", "exampleHinglish": "qen", "exampleMeaning": "day" },
+        { "id": "10_be", "order": 10, "name": "በ", "romanisation": "bä", "ipa": "/b/", "pronunciationNote": "'b' in bat", "exampleWord": "ቤት", "exampleHinglish": "bet", "exampleMeaning": "house" },
+        { "id": "11_ve", "order": 11, "name": "ቨ", "romanisation": "vä", "ipa": "/v/", "pronunciationNote": "'v' in vine; loanwords only" },
+        { "id": "12_te", "order": 12, "name": "ተ", "romanisation": "tä", "ipa": "/t/", "pronunciationNote": "'t' in stop", "exampleWord": "ተማሪ", "exampleHinglish": "temari", "exampleMeaning": "student" },
+        { "id": "13_che", "order": 13, "name": "ቸ", "romanisation": "čä", "ipa": "/tʃ/", "pronunciationNote": "'ch' in cheese" },
+        { "id": "14_khe", "order": 14, "name": "ኀ", "romanisation": "ḫä", "ipa": "/h/", "pronunciationNote": "another historical h; same as ሀ today" },
+        { "id": "15_ne", "order": 15, "name": "ነ", "romanisation": "nä", "ipa": "/n/", "pronunciationNote": "'n' in net" },
+        { "id": "16_nye", "order": 16, "name": "ኘ", "romanisation": "ñä", "ipa": "/ɲ/", "pronunciationNote": "'n' in onion" },
+        { "id": "17_a", "order": 17, "name": "አ", "romanisation": "ʾä", "ipa": "/ʔ/", "pronunciationNote": "glottal stop — the catch in uh-oh", "exampleWord": "አባት", "exampleHinglish": "abat", "exampleMeaning": "father" },
+        { "id": "18_ke", "order": 18, "name": "ከ", "romanisation": "kä", "ipa": "/k/", "pronunciationNote": "'k' in skate" },
+        { "id": "19_khe2", "order": 19, "name": "ኸ", "romanisation": "xä", "ipa": "/x/", "pronunciationNote": "'ch' in loch" },
+        { "id": "20_we", "order": 20, "name": "ወ", "romanisation": "wä", "ipa": "/w/", "pronunciationNote": "'w' in water" },
+        { "id": "21_aa", "order": 21, "name": "ዐ", "romanisation": "ʿä", "ipa": "/ʔ/", "pronunciationNote": "once a pharyngeal; now the same as አ" },
+        { "id": "22_ze", "order": 22, "name": "ዘ", "romanisation": "zä", "ipa": "/z/", "pronunciationNote": "'z' in zoo" },
+        { "id": "23_zhe", "order": 23, "name": "ዠ", "romanisation": "žä", "ipa": "/ʒ/", "pronunciationNote": "'s' in measure" },
+        { "id": "24_ye", "order": 24, "name": "የ", "romanisation": "yä", "ipa": "/j/", "pronunciationNote": "'y' in yes" },
+        { "id": "25_de", "order": 25, "name": "ደ", "romanisation": "dä", "ipa": "/d/", "pronunciationNote": "'d' in dog", "exampleWord": "ደብተር", "exampleHinglish": "debter", "exampleMeaning": "notebook" },
+        { "id": "26_je", "order": 26, "name": "ጀ", "romanisation": "ǧä", "ipa": "/dʒ/", "pronunciationNote": "'j' in jam" },
+        { "id": "27_ge", "order": 27, "name": "ገ", "romanisation": "gä", "ipa": "/ɡ/", "pronunciationNote": "'g' in gold" },
+        { "id": "28_tte", "order": 28, "name": "ጠ", "romanisation": "ṭä", "ipa": "/tʼ/", "pronunciationNote": "ejective t — sharp, with a glottal catch" },
+        { "id": "29_cche", "order": 29, "name": "ጨ", "romanisation": "ṭ̌ä", "ipa": "/tʃʼ/", "pronunciationNote": "ejective ch" },
+        { "id": "30_ppe", "order": 30, "name": "ጰ", "romanisation": "ṗä", "ipa": "/pʼ/", "pronunciationNote": "ejective p" },
+        { "id": "31_tse", "order": 31, "name": "ጸ", "romanisation": "ṣä", "ipa": "/tsʼ/", "pronunciationNote": "ejective ts" },
+        { "id": "32_tse2", "order": 32, "name": "ፀ", "romanisation": "ḍä", "ipa": "/tsʼ/", "pronunciationNote": "a second ejective ts; same sound as ጸ today" },
+        { "id": "33_fe", "order": 33, "name": "ፈ", "romanisation": "fä", "ipa": "/f/", "pronunciationNote": "'f' in fish" },
+        { "id": "34_pe", "order": 34, "name": "ፐ", "romanisation": "pä", "ipa": "/p/", "pronunciationNote": "'p' in spin" }
+      ]
+    }
+  ]
+}

@@ -29,13 +29,19 @@ class MainActivity : ComponentActivity() {
         val settings = AppSettings(applicationContext)
         val audio = AudioPlayer(applicationContext)
         val progress = ProgressStore(applicationContext)
+        val capture = AudioCapture(applicationContext)
         val notes = NoteStore(applicationContext)
 
         setContent {
             StrokeLearnTheme(settings) {
                 Surface {
                     StrokeLearnApp(
-                        remember { AppState(repository) }, settings, audio, progress, notes
+                        state = remember { AppState(repository) },
+                        settings = settings,
+                        audio = audio,
+                        progress = progress,
+                        capture = capture,
+                        notes = notes
                     )
                 }
             }
@@ -49,6 +55,7 @@ private fun StrokeLearnApp(
     settings: AppSettings,
     audio: AudioPlayer,
     progress: ProgressStore,
+    capture: AudioCapture,
     notes: NoteStore
 ) {
     val nav = rememberNavController()
@@ -96,7 +103,9 @@ private fun StrokeLearnApp(
                     onEdit = { id -> nav.navigate("edit?id=$id") },
                     onPractice = { id -> nav.navigate("practice/$id") },
                     onTest = { id -> nav.navigate("test/$id") },
-                    onDataset = { nav.navigate("dataset") }
+                    onDataset = { nav.navigate("dataset") },
+                    onFreeDraw = { id -> nav.navigate("freedraw/$id") },
+                    onGuide = { nav.navigate("notes/view/guide_make_a_script") }
                 )
             }
             composable("sessions") {
@@ -178,7 +187,19 @@ private fun StrokeLearnApp(
                     onBack = { nav.popBackStack() }
                 )
             }
-
+            composable("freedraw/{id}") { entry ->
+                FreeDrawScreen(
+                    state = state,
+                    audio = audio,
+                    letterId = entry.arguments?.getString("id"),
+                    onBack = { nav.popBackStack() },
+                    onCreate = { id ->
+                        nav.navigate("edit?id=$id") {
+                            popUpTo("library")
+                        }
+                    }
+                )
+            }
             composable("dataset") {
                 DatasetStartScreen(
                     state = state,
@@ -190,13 +211,22 @@ private fun StrokeLearnApp(
             composable("dataset/trace") {
                 DatasetScreen(
                     state = state,
+                    audio = audio,
+                    capture = capture,
                     onBack = { nav.popBackStack() },
                     onExport = { nav.navigate("export") }
                 )
             }
 
             composable("export") {
-                ExportScreen(state) { nav.popBackStack() }
+                ExportScreen(state) {
+                    // navigate rather than pop: guarantees landing on the library
+                    // even when the dataset screens are no longer on the stack
+                    nav.navigate("library") {
+                        popUpTo("library") { inclusive = true }
+                        launchSingleTop = true
+                    }
+                }
             }
 
             composable("settings") {
@@ -216,6 +246,7 @@ private fun StrokeLearnApp(
             composable("notes") {
                 NotesScreen(
                     store = notes,
+                    state = state,
                     onBack = { nav.popBackStack() },
                     onEdit = { id ->
                         if (id == null) nav.navigate("notes/edit")
@@ -235,7 +266,7 @@ private fun StrokeLearnApp(
             }
 
             composable("notes/edit") {
-                NoteEditScreen(notes, null) { nav.popBackStack() }
+                NoteEditScreen(notes, state, null) { nav.popBackStack() }
             }
 
             composable(
@@ -244,7 +275,7 @@ private fun StrokeLearnApp(
                     type = NavType.StringType; nullable = true; defaultValue = null
                 })
             ) { entry ->
-                NoteEditScreen(notes, entry.arguments?.getString("id")) { nav.popBackStack() }
+                NoteEditScreen(notes, state, entry.arguments?.getString("id")) { nav.popBackStack() }
             }
         }
     }

@@ -106,15 +106,20 @@ fun StrokeLearnTheme(settings: AppSettings, content: @Composable () -> Unit) {
 class AudioPlayer(private val context: Context) {
 
     private var player: MediaPlayer? = null
-
     fun play(script: Script, letter: Letter) {
         stop()
-        val path = assetPath(script, letter) ?: return
+        // a user recording wins over the bundled asset
+        val userFile = userFile(script, letter)
         runCatching {
-            val descriptor = context.assets.openFd(path)
             player = MediaPlayer().apply {
-                setDataSource(descriptor.fileDescriptor, descriptor.startOffset, descriptor.length)
-                descriptor.close()
+                if (userFile != null) {
+                    setDataSource(userFile.absolutePath)
+                } else {
+                    val path = assetPath(script, letter) ?: return
+                    val descriptor = context.assets.openFd(path)
+                    setDataSource(descriptor.fileDescriptor, descriptor.startOffset, descriptor.length)
+                    descriptor.close()
+                }
                 setOnCompletionListener { release(); player = null }
                 prepare()
                 start()
@@ -122,15 +127,16 @@ class AudioPlayer(private val context: Context) {
         }
     }
 
-    fun stop() {
-        player?.runCatching { stop(); release() }
-        player = null
-    }
-
-    /** True if an audio file actually exists for this letter. */
+    /** True if any audio exists for this letter, recorded or bundled. */
     fun hasAudio(script: Script, letter: Letter): Boolean {
+        if (userFile(script, letter) != null) return true
         val path = assetPath(script, letter) ?: return false
         return runCatching { context.assets.openFd(path).close(); true }.getOrDefault(false)
+    }
+
+    private fun userFile(script: Script, letter: Letter): java.io.File? {
+        val dir = java.io.File(context.filesDir, "audio/${script.audioDir.ifBlank { script.id }}")
+        return java.io.File(dir, "${letter.id}.m4a").takeIf { it.exists() }
     }
 
     private fun assetPath(script: Script, letter: Letter): String? {
@@ -138,4 +144,9 @@ class AudioPlayer(private val context: Context) {
         val fileName = letter.audio ?: "${letter.id}.mp3"
         return "audio/${script.audioDir}/$fileName"
     }
+    fun stop() {
+        player?.runCatching { stop(); release() }
+        player = null
+    }
+
 }

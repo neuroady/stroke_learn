@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "id": "punjabi",
+  "name": "Punjabi",
+  "script": "Gurmukhi",
+  "audioDir": "punjabi",
+  "isDefault": false,
+  "groups": [
+    {
+      "id": "bearers",
+      "name": "ਸਵਰ ਵਾਹਕ (Vowel bearers)",
+      "letters": [
+        { "id": "01_ura", "order": 1, "name": "ੳ", "romanisation": "ūṛā", "ipa": "—", "pronunciationNote": "carries u, ū and o vowels; no sound alone" },
+        { "id": "02_aira", "order": 2, "name": "ਅ", "romanisation": "aiṛā", "ipa": "/ə/", "pronunciationNote": "'a' in about", "exampleWord": "ਅੰਬ", "exampleHinglish": "amb", "exampleMeaning": "mango" },
+        { "id": "03_iri", "order": 3, "name": "ੲ", "romanisation": "īṛī", "ipa": "—", "pronunciationNote": "carries i, ī and e vowels; no sound alone" }
+      ]
+    },
+    {
+      "id": "consonants",
+      "name": "ਵਿਅੰਜਨ (Consonants)",
+      "letters": [
+        { "id": "11_sassa", "order": 11, "name": "ਸ", "romanisation": "sassā", "ipa": "/s/", "pronunciationNote": "'s' in sun", "exampleWord": "ਸੱਪ", "exampleHinglish": "sapp", "exampleMeaning": "snake" },
+        { "id": "12_haha", "order": 12, "name": "ਹ", "romanisation": "hāhā", "ipa": "/h/", "pronunciationNote": "'h' in house", "exampleWord": "ਹਾਥੀ", "exampleHinglish": "haathi", "exampleMeaning": "elephant" },
+
+        { "id": "14_kakka", "order": 14, "name": "ਕ", "romanisation": "kakkā", "ipa": "/k/", "pronunciationNote": "'k' in skate; minimal breath", "exampleWord": "ਕਿਤਾਬ", "exampleHinglish": "kitaab", "exampleMeaning": "book" },
+        { "id": "15_khakkha", "order": 15, "name": "ਖ", "romanisation": "khakkhā", "ipa": "/kʰ/", "pronunciationNote": "aspirated ਕ; strong puff of air", "exampleWord": "ਖੰਡ", "exampleHinglish": "khand", "exampleMeaning": "sugar" },
+        { "id": "16_gagga", "order": 16, "name": "ਗ", "romanisation": "gaggā", "ipa": "/ɡ/", "pronunciationNote": "'g' in gold", "exampleWord": "ਗਾਂ", "exampleHinglish": "gaan", "exampleMeaning": "cow" },
+        { "id": "17_khagga", "order": 17, "name": "ਘ", "romanisation": "kaggā", "ipa": "/kə̀/", "pronunciationNote": "tone letter — lowers pitch on the following vowel", "exampleWord": "ਘਰ", "exampleHinglish": "ghar", "exampleMeaning": "house" },
+        { "id": "18_nganga", "order": 18, "name": "ਙ", "romanisation": "ṅaṅṅā", "ipa": "/ŋ/", "pronunciationNote": "'ng' in king; rare on its own" },
+
+        { "id": "20_chacha", "order": 20, "name": "ਚ", "romanisation": "chacchā", "ipa": "/tʃ/", "pronunciationNote": "'ch' in cheese; minimal breath", "exampleWord": "ਚੰਦ", "exampleHinglish": "chand", "exampleMeaning": "moon" },
+        { "id": "21_chhachha", "order": 21, "name": "ਛ", "romanisation": "chhacchhā", "ipa": "/tʃʰ/", "pronunciationNote": "aspirated ਚ", "exampleWord": "ਛੱਤ", "exampleHinglish": "chhatt", "exampleMeaning": "roof" },
+        { "id": "22_jajja", "order": 22, "name": "ਜ", "romanisation": "jajjā", "ipa": "/dʒ/", "pronunciationNote": "'j' in jam", "exampleWord": "ਜਹਾਜ਼", "exampleHinglish": "jahaaz", "exampleMeaning": "ship" },
+        { "id": "23_chajja", "order": 23, "name": "ਝ", "romanisation": "jajjā", "ipa": "/tʃə̀/", "pronunciationNote": "tone letter — lowers pitch on the following vowel" },
+        { "id": "24_njanja", "order": 24, "name": "ਞ", "romanisation": "ñaññā", "ipa": "/ɲ/", "pronunciationNote": "'n' in onion; rare on its own" },
+
+        { "id": "26_tainka", "order": 26, "name": "ਟ", "romanisation": "ṭaiṅkā", "ipa": "/ʈ/", "pronunciationNote": "retroflex t — tongue curled back to the roof", "exampleWord": "ਟੋਪੀ", "exampleHinglish": "topi", "exampleMeaning": "cap" },
+        { "id": "27_thattha", "order": 27, "name": "ਠ", "romanisation": "ṭhaṭṭhā", "ipa": "/ʈʰ/", "pronunciationNote": "aspirated ਟ" },
+        { "id": "28_dadda", "order": 28, "name": "ਡ", "romanisation": "ḍaḍḍā", "ipa": "/ɖ/", "pronunciationNote": "retroflex d", "exampleWord": "ਡੱਬਾ", "exampleHinglish": "dabba", "exampleMeaning": "box" },
+        { "id": "29_dhadda", "order": 29, "name": "ਢ", "romanisation": "ṭaḍḍā", "ipa": "/ʈə̀/", "pronunciationNote": "tone letter — retroflex, lowers pitch" },
+        { "id": "30_nana", "order": 30, "name": "ਣ", "romanisation": "ṇāṇā", "ipa": "/ɳ/", "pronunciationNote": "retroflex n; never starts a word" },
+
+        { "id": "32_tatta", "order": 32, "name": "ਤ", "romanisation": "tattā", "ipa": "/t̪/", "pronunciationNote": "dental t — tongue against the teeth", "exampleWord": "ਤਾਰਾ", "exampleHinglish": "taara", "exampleMeaning": "star" },
+        { "id": "33_thattha", "order": 33, "name": "ਥ", "romanisation": "thatthā", "ipa": "/t̪ʰ/", "pronunciationNote": "aspirated ਤ" },
+        { "id": "34_dadda", "order": 34, "name": "ਦ", "romanisation": "daddā", "ipa": "/d̪/", "pronunciationNote": "dental d", "exampleWord": "ਦਰਵਾਜ਼ਾ", "exampleHinglish": "darvaaza", "exampleMeaning": "door" },
+        { "id": "35_tadda", "order": 35, "name": "ਧ", "romanisation": "taddā", "ipa": "/t̪ə̀/", "pronunciationNote": "tone letter — lowers pitch on the following vowel" },
+        { "id": "36_nanna", "order": 36, "name": "ਨ", "romanisation": "nannā", "ipa": "/n/", "pronunciationNote": "'n' in net", "exampleWord": "ਨਦੀ", "exampleHinglish": "nadi", "exampleMeaning": "river" },
+
+        { "id": "38_pappa", "order": 38, "name": "ਪ", "romanisation": "pappā", "ipa": "/p/", "pronunciationNote": "'p' in spin; minimal breath", "exampleWord": "ਪਾਣੀ", "exampleHinglish": "paani", "exampleMeaning": "water" },
+        { "id": "39_phapha", "order": 39, "name": "ਫ", "romanisation": "phapphā", "ipa": "/pʰ/", "pronunciationNote": "aspirated ਪ", "exampleWord": "ਫੁੱਲ", "exampleHinglish": "phull", "exampleMeaning": "flower" },
+        { "id": "40_babba", "order": 40, "name": "ਬ", "romanisation": "babbā", "ipa": "/b/", "pronunciationNote": "'b' in bat", "exampleWord": "ਬੱਚਾ", "exampleHinglish": "bachcha", "exampleMeaning": "child" },
+        { "id": "41_pabba", "order": 41, "name": "ਭ", "romanisation": "pabbā", "ipa": "/pə̀/", "pronunciationNote": "tone letter — lowers pitch on the following vowel" },
+        { "id": "42_mamma", "order": 42, "name": "ਮ", "romanisation": "mammā", "ipa": "/m/", "pronunciationNote": "'m' in map", "exampleWord": "ਮਾਂ", "exampleHinglish": "maan", "exampleMeaning": "mother" },
+
+        { "id": "44_yayya", "order": 44, "name": "ਯ", "romanisation": "yayyā", "ipa": "/j/", "pronunciationNote": "'y' in yes" },
+        { "id": "45_rara", "order": 45, "name": "ਰ", "romanisation": "rārā", "ipa": "/r/", "pronunciationNote": "tapped r, as in Spanish pero", "exampleWord": "ਰੋਟੀ", "exampleHinglish": "roti", "exampleMeaning": "bread" },
+        { "id": "46_lalla", "order": 46, "name": "ਲ", "romanisation": "lallā", "ipa": "/l/", "pronunciationNote": "'l' in love", "exampleWord": "ਲੂਣ", "exampleHinglish": "loon", "exampleMeaning": "salt" },
+        { "id": "47_vava", "order": 47, "name": "ਵ", "romanisation": "vāvā", "ipa": "/ʋ/", "pronunciationNote": "between English v and w", "exampleWord": "ਵਾਲ", "exampleHinglish": "vaal", "exampleMeaning": "hair" },
+        { "id": "48_rarra", "order": 48, "name": "ੜ", "romanisation": "ṛāṛā", "ipa": "/ɽ/", "pronunciationNote": "retroflex flap; tongue flicks off the roof. Never starts a word" }
+      ]
+    }
+  ]
+}
