@@ -864,7 +864,11 @@ fun DatasetScreen(
         }
     ) { padding ->
         Column(
-            Modifier.padding(padding).padding(16.dp),
+            Modifier
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp)
+                .navigationBarsPadding(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
